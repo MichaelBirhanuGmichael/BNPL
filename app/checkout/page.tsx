@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, X, Store, Lock, ChevronRight } from "lucide-react";
+import { ArrowLeft, Store, Lock, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const [phase, setPhase] = useState<"scanning" | "success">("scanning");
   const [scanFlash, setScanFlash] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"full" | "split">("full");
@@ -91,14 +93,17 @@ export default function CheckoutPage() {
       </AnimatePresence>
 
       {/* Top Header */}
-      <div className="relative z-10 flex items-center justify-between p-4 pt-12">
-        <button className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+      <div className="relative z-30 flex items-center justify-between p-4 pt-12">
+        <button
+          type="button"
+          onClick={() => router.push("/dashboard")}
+          className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center"
+          aria-label="Back to dashboard"
+        >
           <ArrowLeft className="w-5 h-5 text-white" />
         </button>
         <span className="text-white/80 text-sm font-medium">Scan QR Code</span>
-        <button className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
-          <X className="w-5 h-5 text-white" />
-        </button>
+        <div className="w-10 h-10" />
       </div>
 
       {/* Scanning Reticle - Full Screen in Phase 1 */}
