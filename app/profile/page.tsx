@@ -4,24 +4,18 @@ import { motion } from "framer-motion";
 import {
   BriefcaseBusiness,
   CheckCircle2,
-  ClipboardList,
   Gift,
   Globe,
   Headphones,
-  Home,
   Lock,
   LogOut,
-  QrCode,
-  ShoppingBag,
   TrendingUp,
   User,
   Wallet,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { AppBottomNav } from "@/components/app-bottom-nav";
 
 export default function ProfilePage() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
       <motion.div
@@ -134,41 +128,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 pt-4 bg-gradient-to-t from-white via-white to-transparent">
-          <div className="relative rounded-full bg-white px-6 py-3 shadow-xl border border-gray-100">
-            <div className="flex items-center justify-around">
-              <BottomItem
-                icon={<Home className="h-5 w-5 text-[#9CA3AF]" />}
-                label="Home"
-                onClick={() => router.push("/dashboard")}
-              />
-              <BottomItem
-                icon={<ShoppingBag className="h-5 w-5 text-[#9CA3AF]" />}
-                label="Shop"
-                onClick={() => router.push("/shop")}
-              />
-              <div className="w-14" />
-              <BottomItem
-                icon={<ClipboardList className="h-5 w-5 text-[#9CA3AF]" />}
-                label="Orders"
-                onClick={() => router.push("/orders")}
-              />
-              <BottomItem
-                icon={<User className="h-5 w-5 text-[#00D084]" />}
-                label="Profile"
-                active
-                onClick={() => router.push("/profile")}
-              />
-            </div>
-            <button
-              type="button"
-              onClick={() => router.push("/checkout")}
-              className="absolute -top-7 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full bg-[#00D084] text-white shadow-[0_4px_20px_rgba(0,208,132,0.45)]"
-            >
-              <QrCode className="h-7 w-7" />
-            </button>
-          </div>
-        </div>
+        <AppBottomNav active="profile" />
       </motion.div>
     </div>
   );
@@ -194,23 +154,3 @@ function SettingRow({
   );
 }
 
-function BottomItem({
-  icon,
-  label,
-  onClick,
-  active = false,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  onClick: () => void;
-  active?: boolean;
-}) {
-  return (
-    <button type="button" onClick={onClick} className="flex flex-col items-center gap-0.5">
-      {icon}
-      <span className="text-[10px] font-medium" style={{ color: active ? "#00D084" : "#9CA3AF" }}>
-        {label}
-      </span>
-    </button>
-  );
-}

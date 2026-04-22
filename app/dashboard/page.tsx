@@ -1,11 +1,10 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { AppBottomNav } from "@/components/app-bottom-nav"
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState("home")
   const router = useRouter()
 
   return (
@@ -122,102 +121,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Floating QR Button - Emerald Green with White QR Icon */}
-        <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20">
-          <button 
-            className="w-16 h-16 rounded-full flex items-center justify-center animate-pulse-slow"
-            style={{
-              backgroundColor: "#00D084",
-              boxShadow: "0 4px 20px rgba(0, 208, 132, 0.5)"
-            }}
-          >
-            {/* QR Code Icon */}
-            <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <rect x="3" y="3" width="7" height="7" rx="1" />
-              <rect x="14" y="3" width="7" height="7" rx="1" />
-              <rect x="3" y="14" width="7" height="7" rx="1" />
-              <rect x="14" y="14" width="3" height="3" />
-              <rect x="18" y="14" width="3" height="3" />
-              <rect x="14" y="18" width="3" height="3" />
-              <rect x="18" y="18" width="3" height="3" />
-              <rect x="5" y="5" width="3" height="3" fill="currentColor" />
-              <rect x="16" y="5" width="3" height="3" fill="currentColor" />
-              <rect x="5" y="16" width="3" height="3" fill="currentColor" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Bottom Navigation - Floating White Pill */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 pt-4 bg-gradient-to-t from-white via-white to-transparent">
-          <div className="bg-white rounded-full px-6 py-3 shadow-xl border border-gray-100 flex items-center justify-around">
-            <NavItem 
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-              }
-              label="Home"
-              active={activeTab === "home"}
-              onClick={() => setActiveTab("home")}
-            />
-            <NavItem 
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-              }
-              label="Shop"
-              active={activeTab === "shop"}
-              onClick={() => router.push("/shop")}
-            />
-            {/* Spacer for QR button */}
-            <div className="w-14" />
-            <NavItem 
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                </svg>
-              }
-              label="Orders"
-              active={activeTab === "orders"}
-              onClick={() => router.push("/orders")}
-            />
-            <NavItem 
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              }
-              label="Profile"
-              active={activeTab === "profile"}
-              onClick={() => router.push("/profile")}
-            />
-          </div>
-        </div>
+        <AppBottomNav active="home" />
       </div>
     </div>
-  )
-}
-
-function NavItem({ 
-  icon, 
-  label, 
-  active, 
-  onClick 
-}: { 
-  icon: React.ReactNode
-  label: string
-  active: boolean
-  onClick: () => void
-}) {
-  return (
-    <button 
-      onClick={onClick}
-      className="flex flex-col items-center gap-0.5 transition-colors"
-      style={{ color: active ? "#00D084" : "#9CA3AF" }}
-    >
-      {icon}
-      <span className="text-[10px] font-medium">{label}</span>
-    </button>
   )
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { AppBottomNav } from "@/components/app-bottom-nav";
 
 export default function OrdersPage() {
   const [tab, setTab] = useState<"ACTIVE" | "PAID_OFF">("ACTIVE");
@@ -42,7 +43,7 @@ export default function OrdersPage() {
           </button>
         </div>
 
-        <div className="mt-6 space-y-4 overflow-y-auto pb-4">
+        <div className="mt-6 space-y-4 overflow-y-auto pb-24">
           <Link
             href="/order/1"
             className="block rounded-3xl border border-[#ECEFF1] p-4 text-left shadow-[0_12px_28px_rgba(26,26,26,0.06)]"
@@ -83,6 +84,7 @@ export default function OrdersPage() {
           </div>
         </div>
       </div>
+      <AppBottomNav active="orders" />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { AppBottomNav } from "@/components/app-bottom-nav";
 
 const brands = ["All", "Nike", "Samsung", "IKEA", "Zara", "Apple"];
 
@@ -307,133 +308,7 @@ export default function ShopPage() {
         )}
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-[360px] z-50">
-        <div
-          className="flex items-center justify-around py-4 px-6 rounded-full"
-          style={{
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
-          }}
-        >
-          {/* Home */}
-          <button onClick={() => router.push("/dashboard")} className="flex flex-col items-center gap-1">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#9CA3AF"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-            <span className="text-[10px]" style={{ color: "#9CA3AF" }}>
-              Home
-            </span>
-          </button>
-
-          {/* Shop - Active */}
-          <button className="flex flex-col items-center gap-1">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#00D084"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-              <path d="M3 6h18" />
-              <path d="M16 10a4 4 0 0 1-8 0" />
-            </svg>
-            <span className="text-[10px] font-semibold" style={{ color: "#00D084" }}>
-              Shop
-            </span>
-          </button>
-
-          {/* Spacer for QR Button */}
-          <div className="w-14" />
-
-          {/* Orders */}
-          <button onClick={() => router.push("/orders")} className="flex flex-col items-center gap-1">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#9CA3AF"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-              <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z" />
-              <path d="M12 11h4" />
-              <path d="M12 16h4" />
-              <path d="M8 11h.01" />
-              <path d="M8 16h.01" />
-            </svg>
-            <span className="text-[10px]" style={{ color: "#9CA3AF" }}>
-              Orders
-            </span>
-          </button>
-
-          {/* Profile */}
-          <button onClick={() => router.push("/profile")} className="flex flex-col items-center gap-1">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#9CA3AF"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="8" r="5" />
-              <path d="M20 21a8 8 0 0 0-16 0" />
-            </svg>
-            <span className="text-[10px]" style={{ color: "#9CA3AF" }}>
-              Profile
-            </span>
-          </button>
-        </div>
-
-        {/* Floating QR Button */}
-        <button
-          onClick={() => router.push("/checkout")}
-          className="absolute -top-7 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full flex items-center justify-center animate-pulse-slow"
-          style={{
-            backgroundColor: "#00D084",
-            boxShadow: "0 4px 20px rgba(0, 208, 132, 0.4)",
-          }}
-        >
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#FFFFFF"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <rect x="14" y="14" width="3" height="3" />
-            <rect x="18" y="14" width="3" height="3" />
-            <rect x="14" y="18" width="3" height="3" />
-            <rect x="18" y="18" width="3" height="3" />
-          </svg>
-        </button>
-      </div>
+      <AppBottomNav active="shop" />
     </div>
   );
 }
