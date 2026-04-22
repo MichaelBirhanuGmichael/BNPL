@@ -190,7 +190,7 @@ export default function DashboardPage() {
               }
               label="Profile"
               active={activeTab === "profile"}
-              onClick={() => setActiveTab("profile")}
+              onClick={() => router.push("/profile")}
             />
           </div>
         </div>

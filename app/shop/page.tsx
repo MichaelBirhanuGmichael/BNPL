@@ -385,7 +385,7 @@ export default function ShopPage() {
           </button>
 
           {/* Profile */}
-          <button className="flex flex-col items-center gap-1">
+          <button onClick={() => router.push("/profile")} className="flex flex-col items-center gap-1">
             <svg
               width="24"
               height="24"
