@@ -1,10 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 export default function VerifyOtpPage() {
+  return (
+    <Suspense fallback={<VerifyFallback />}>
+      <VerifyOtpContent />
+    </Suspense>
+  );
+}
+
+function VerifyOtpContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const flow = searchParams.get("flow") === "login" ? "login" : "signup";
@@ -70,6 +78,27 @@ export default function VerifyOtpPage() {
           >
             Verify & Continue
           </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function VerifyFallback() {
+  return (
+    <div className="min-h-screen bg-white max-w-[400px] mx-auto flex flex-col relative overflow-hidden">
+      <div className="flex-1 flex flex-col px-6 pt-4 pb-32">
+        <button
+          type="button"
+          className="w-10 h-10 flex items-center justify-center rounded-full -ml-2"
+          aria-label="Go back"
+          disabled
+        >
+          <ArrowLeft className="w-6 h-6 text-[#D1D5DB]" strokeWidth={2} />
+        </button>
+        <div className="mt-12">
+          <h1 className="text-[32px] leading-[1.15] font-bold text-[#1A1A1A] tracking-tight">Enter OTP code</h1>
+          <p className="mt-4 text-[17px] leading-relaxed text-[#9CA3AF]">Loading...</p>
         </div>
       </div>
     </div>
