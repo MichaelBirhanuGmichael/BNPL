@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 export default function VerifyOtpPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const flow = searchParams.get("flow") === "login" ? "login" : "signup";
   const [otp, setOtp] = useState("");
+
+  const nextRoute = flow === "signup" ? "/verify/fayda-id" : "/dashboard";
 
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "").slice(0, 6);
@@ -15,7 +19,7 @@ export default function VerifyOtpPage() {
     // Prototype flow: no validation, auto-continue on full OTP length.
     if (value.length === 6) {
       setTimeout(() => {
-        router.push("/verify/fayda-id");
+        router.push(nextRoute);
       }, 350);
     }
   };
@@ -25,7 +29,7 @@ export default function VerifyOtpPage() {
       <div className="flex-1 flex flex-col px-6 pt-4 pb-32 animate-slide-up">
         <button
           type="button"
-          onClick={() => router.push("/")}
+          onClick={() => router.push(`/auth/phone?flow=${flow}`)}
           className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#F5F5F5] transition-colors duration-200 -ml-2 opacity-0 animate-fade-in"
           aria-label="Go back"
         >
@@ -61,7 +65,7 @@ export default function VerifyOtpPage() {
         <div className="max-w-[400px] mx-auto px-6 pt-4 pb-8 safe-bottom opacity-0 animate-slide-up delay-300">
           <button
             type="button"
-            onClick={() => router.push("/verify/fayda-id")}
+            onClick={() => router.push(nextRoute)}
             className="w-full h-[58px] rounded-full font-semibold text-[17px] bg-[#00D084] text-white shadow-lg shadow-[#00D084]/25 transition-all duration-300 ease-out active:scale-[0.98]"
           >
             Verify & Continue
