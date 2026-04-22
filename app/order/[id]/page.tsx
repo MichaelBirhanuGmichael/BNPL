@@ -1,10 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Check, Circle } from "lucide-react";
 
 export default function OrderDetailsPage() {
   const router = useRouter();
+  const params = useParams<{ id: string }>();
 
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
@@ -88,6 +89,7 @@ export default function OrderDetailsPage() {
           </p>
           <button
             type="button"
+            onClick={() => router.push(`/order/${params.id}/support`)}
             className="mt-4 rounded-full border border-[#00D084] px-4 py-2 text-sm font-semibold text-[#0E7A4E] transition hover:bg-[#E1FAEE]"
           >
             Report an Issue / Get Help
