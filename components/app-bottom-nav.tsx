@@ -16,7 +16,7 @@ export function AppBottomNav({ active }: { active: NavView }) {
   const router = useRouter();
 
   return (
-    <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-[400px] -translate-x-1/2 px-5 pb-6 pt-4 pointer-events-none bg-gradient-to-t from-white via-white to-transparent">
+    <div className="fixed inset-x-0 bottom-0 z-[80] mx-auto w-full max-w-[400px] px-5 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 pointer-events-none">
       <div className="relative rounded-full border border-gray-100 bg-white px-6 py-3 shadow-xl pointer-events-auto">
         <div className="flex items-center justify-around">
           <BottomItem
