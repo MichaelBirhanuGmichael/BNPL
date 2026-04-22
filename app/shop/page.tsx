@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Headphones, Heart } from "lucide-react";
+import { Headphones, Heart, Sparkles } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
 
 const allProducts = [
@@ -116,13 +116,13 @@ export default function ShopPage() {
         className="px-5 pt-6 pb-3 sticky top-0 z-20 bg-white/95 backdrop-blur-md"
       >
         <div className="flex items-center gap-2.5">
-          <div className="w-[85%] flex items-center gap-3 px-4 py-3 rounded-full bg-gray-100 border-none">
+          <div className="w-[85%] flex items-center gap-3 bg-slate-50 border border-slate-100 text-slate-900 placeholder:text-slate-400 rounded-full py-3 px-5 transition-all focus-within:ring-2 focus-within:ring-emerald-500/20">
           <svg
             width="20"
             height="20"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#9CA3AF"
+            stroke="#94A3B8"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -135,14 +135,13 @@ export default function ShopPage() {
             placeholder="Filter products in shop..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 bg-transparent outline-none text-sm"
-            style={{ color: "#1A1A1A" }}
+            className="flex-1 bg-transparent outline-none text-sm text-slate-900 placeholder:text-slate-400"
           />
           </div>
           <button
             type="button"
             aria-label="Wishlist"
-            className="bg-gray-50 p-3 rounded-full text-gray-600 hover:text-red-500 transition-colors"
+            className="p-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-full transition-colors"
           >
             <Heart className="w-5 h-5" />
           </button>
@@ -150,7 +149,7 @@ export default function ShopPage() {
             type="button"
             onClick={() => router.push("/care")}
             aria-label="Customer support chat"
-            className="bg-gray-50 p-3 rounded-full text-gray-600 hover:text-emerald-600 transition-colors"
+            className="p-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-full transition-colors"
           >
             <Headphones className="w-5 h-5" />
           </button>
@@ -185,7 +184,7 @@ export default function ShopPage() {
                   </div>
                 )}
               </div>
-              <span className="text-xs font-medium text-center mt-1 text-gray-700">{brandName}</span>
+              <span className="text-xs font-medium text-center mt-1 text-slate-700">{brandName}</span>
             </button>
             );
           })}
@@ -209,7 +208,10 @@ export default function ShopPage() {
           </div>
         </div>
 
-        <h2 className="text-xl font-black tracking-tight text-slate-900 mt-10 mb-4">🔥 Top Deals</h2>
+        <div className="flex items-center gap-2 mb-4 mt-10">
+          <Sparkles className="w-5 h-5 text-emerald-500 fill-emerald-500/20" />
+          <h2 className="text-[1.35rem] font-black tracking-tighter text-slate-900">Top Deals</h2>
+        </div>
         <div className="flex overflow-x-auto gap-4 snap-x hide-scrollbar [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {filteredDeals.map((product) => (
             <article
@@ -239,22 +241,21 @@ export default function ShopPage() {
                 />
               </div>
               <div className="p-3">
-                <h3 className="font-semibold text-sm mb-2 leading-tight" style={{ color: "#1A1A1A" }}>
-                  {product.name}
-                </h3>
-                <p className="text-xs line-through mb-1" style={{ color: "#9CA3AF" }}>
+                <h3 className="text-sm font-bold text-slate-900 tracking-tight leading-snug">{product.name}</h3>
+                <p className="text-xs text-slate-400 line-through mt-1 font-medium">
                   {formatPrice(product.fullPrice)} ETB
                 </p>
-                <p className="text-sm font-bold" style={{ color: "#00D084" }}>
-                  From {formatPrice(product.monthlyPrice)} ETB
-                  <span className="font-normal text-xs"> /month</span>
-                </p>
+                <div className="mt-1.5 flex items-baseline gap-1">
+                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">From</span>
+                  <span className="text-base font-black text-emerald-500 tracking-tight">{formatPrice(product.monthlyPrice)} ETB</span>
+                  <span className="text-[10px] font-medium text-slate-500">/mo</span>
+                </div>
               </div>
             </article>
           ))}
         </div>
 
-        <h2 className="text-xl font-black tracking-tight text-slate-900 mt-10 mb-4">Just For You</h2>
+        <h2 className="text-[1.35rem] font-black tracking-tighter text-slate-900 mt-10 mb-4">Just For You</h2>
         <div className="grid grid-cols-2 gap-4 pb-24">
           {filteredForYou.map((product, index) => (
             <motion.div
@@ -284,16 +285,15 @@ export default function ShopPage() {
                 />
               </div>
               <div className="p-3">
-                <h3 className="font-semibold text-sm mb-2 leading-tight" style={{ color: "#1A1A1A" }}>
-                  {product.name}
-                </h3>
-                <p className="text-xs line-through mb-1" style={{ color: "#9CA3AF" }}>
+                <h3 className="text-sm font-bold text-slate-900 tracking-tight leading-snug">{product.name}</h3>
+                <p className="text-xs text-slate-400 line-through mt-1 font-medium">
                   {formatPrice(product.fullPrice)} ETB
                 </p>
-                <p className="text-sm font-bold" style={{ color: "#00D084" }}>
-                  From {formatPrice(product.monthlyPrice)} ETB
-                  <span className="font-normal text-xs"> /month</span>
-                </p>
+                <div className="mt-1.5 flex items-baseline gap-1">
+                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">From</span>
+                  <span className="text-base font-black text-emerald-500 tracking-tight">{formatPrice(product.monthlyPrice)} ETB</span>
+                  <span className="text-[10px] font-medium text-slate-500">/mo</span>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -306,7 +306,7 @@ export default function ShopPage() {
               height="48"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#9CA3AF"
+              stroke="#94A3B8"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -314,7 +314,7 @@ export default function ShopPage() {
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
-            <p className="mt-4 text-sm" style={{ color: "#9CA3AF" }}>
+            <p className="mt-4 text-sm text-slate-400">
               No products found
             </p>
           </div>
