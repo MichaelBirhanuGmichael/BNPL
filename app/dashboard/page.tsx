@@ -1,15 +1,87 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { MapPin, ShieldCheck } from "lucide-react"
+import { Briefcase, ChevronLeft, ChevronRight, MapPin, ShieldCheck } from "lucide-react"
 import { AppBottomNav } from "@/components/app-bottom-nav"
 import { mockDashboardData } from "@/data/mockDashboardData"
 
 export default function DashboardPage() {
   const router = useRouter()
+  const dealsCarouselRef = useRef<HTMLDivElement>(null)
   const transactionProgress =
     (mockDashboardData.creditBuilder.transactions.current / mockDashboardData.creditBuilder.transactions.required) * 100
+  const remainingTransactions = Math.max(
+    mockDashboardData.creditBuilder.transactions.required - mockDashboardData.creditBuilder.transactions.current,
+    0
+  )
+  const remainingVolumeEtb = Math.max(
+    mockDashboardData.creditBuilder.volumeEtb.required - mockDashboardData.creditBuilder.volumeEtb.current,
+    0
+  )
+  const dealCardWidth = 272
+  const featuredDealsLoop = [...mockDashboardData.featuredDeals, ...mockDashboardData.featuredDeals]
+
+  const scrollDeals = (direction: "prev" | "next") => {
+    const carousel = dealsCarouselRef.current
+    if (!carousel) return
+
+    carousel.scrollBy({
+      left: direction === "next" ? dealCardWidth : -dealCardWidth,
+      behavior: "smooth"
+    })
+  }
+
+  useEffect(() => {
+    const carousel = dealsCarouselRef.current
+    if (!carousel) return
+
+    let isPaused = false
+    let rafId = 0
+    let lastTimestamp = 0
+    const speedPxPerSecond = 30
+
+    const tick = (timestamp: number) => {
+      if (!lastTimestamp) lastTimestamp = timestamp
+      const deltaSeconds = (timestamp - lastTimestamp) / 1000
+      lastTimestamp = timestamp
+
+      if (!isPaused) {
+        carousel.scrollLeft += speedPxPerSecond * deltaSeconds
+        const halfwayPoint = carousel.scrollWidth / 2
+        if (carousel.scrollLeft >= halfwayPoint) {
+          carousel.scrollLeft -= halfwayPoint
+        }
+      }
+
+      rafId = window.requestAnimationFrame(tick)
+    }
+
+    const pause = () => {
+      isPaused = true
+    }
+
+    const resume = () => {
+      isPaused = false
+      lastTimestamp = 0
+    }
+
+    carousel.addEventListener("mouseenter", pause)
+    carousel.addEventListener("mouseleave", resume)
+    carousel.addEventListener("touchstart", pause, { passive: true })
+    carousel.addEventListener("touchend", resume)
+
+    rafId = window.requestAnimationFrame(tick)
+
+    return () => {
+      window.cancelAnimationFrame(rafId)
+      carousel.removeEventListener("mouseenter", pause)
+      carousel.removeEventListener("mouseleave", resume)
+      carousel.removeEventListener("touchstart", pause)
+      carousel.removeEventListener("touchend", resume)
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
@@ -86,10 +158,13 @@ export default function DashboardPage() {
 
             {/* Visual Progress Bar - Gray Track with 33% Emerald Fill */}
             <div className="mb-4">
-              <div className="flex justify-between text-xs text-[#9CA3AF] mb-2">
-                <span>Progress</span>
-                <span className="font-semibold text-[#1A1A1A]">
-                  {mockDashboardData.creditBuilder.transactions.current} of {mockDashboardData.creditBuilder.transactions.required} transactions
+              <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
+                <span>
+                  {mockDashboardData.creditBuilder.transactions.current} / {mockDashboardData.creditBuilder.transactions.required} Transactions
+                </span>
+                <span>
+                  {mockDashboardData.creditBuilder.volumeEtb.current.toLocaleString()} /{" "}
+                  {mockDashboardData.creditBuilder.volumeEtb.required.toLocaleString()} ETB
                 </span>
               </div>
               <div className="h-3 rounded-full bg-[#E5E7EB] overflow-hidden">
@@ -103,12 +178,10 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <p className="text-xs text-[#9CA3AF] mb-3">
-              {mockDashboardData.creditBuilder.volumeEtb.current} of {mockDashboardData.creditBuilder.volumeEtb.required} ETB spent.
-            </p>
-
             <p className="text-[#6B7280] text-sm leading-relaxed mb-4">
-              Make 3 Pay-in-Full transactions to prove your credit.
+              You&apos;re almost there! Complete {remainingTransactions} more Pay-in-Full{" "}
+              {remainingTransactions === 1 ? "transaction" : "transactions"} totaling at least {remainingVolumeEtb.toLocaleString()} ETB to
+              unlock your {mockDashboardData.wallet.lockedTierEtb.toLocaleString()} ETB BNPL limit.
             </p>
 
             <button
@@ -131,12 +204,15 @@ export default function DashboardPage() {
           </div>
 
           {mockDashboardData.prosumerUpsell.show && (
-            <div className="rounded-3xl p-5 mt-4 border border-[#DBEAFE] bg-gradient-to-r from-blue-50 to-indigo-50 animate-fade-in">
-              <h3 className="text-[#1A1A1A] text-base font-bold">{mockDashboardData.prosumerUpsell.title}</h3>
-              <p className="text-[#6B7280] text-sm mt-1.5 leading-relaxed">{mockDashboardData.prosumerUpsell.subtitle}</p>
+            <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-5 mt-4 animate-fade-in">
+              <div className="flex items-center gap-2">
+                <Briefcase className="w-5 h-5 text-emerald-500" />
+                <h3 className="text-gray-900 font-semibold">{mockDashboardData.prosumerUpsell.title.replace(" 🚀", "")}</h3>
+              </div>
+              <p className="text-[#6B7280] text-sm mt-2 leading-relaxed">{mockDashboardData.prosumerUpsell.subtitle}</p>
               <button
                 type="button"
-                className="mt-4 h-10 px-4 rounded-full border border-[#93C5FD] text-[#1E40AF] text-sm font-semibold hover:bg-white/70 transition-colors"
+                className="mt-4 border border-emerald-500 text-emerald-600 font-medium rounded-full px-4 py-2 hover:bg-emerald-50 transition-colors"
               >
                 {mockDashboardData.prosumerUpsell.ctaText}
               </button>
@@ -145,26 +221,48 @@ export default function DashboardPage() {
 
           <section className="mt-6">
             <h3 className="text-[#1A1A1A] text-lg font-bold mb-3">Featured Deals</h3>
-            <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {mockDashboardData.featuredDeals.map((deal) => (
-                <article
-                  key={deal.merchantId}
-                  className="relative shrink-0 w-[220px] h-[220px] rounded-3xl overflow-hidden snap-start"
-                  style={{
-                    backgroundImage: `linear-gradient(to top, rgba(17, 24, 39, 0.88) 22%, rgba(17, 24, 39, 0.18)), url(${deal.logoUrl})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center"
-                  }}
-                >
-                  <span className="absolute top-3 left-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                    {deal.promoBadge}
-                  </span>
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="text-white text-base font-semibold leading-tight">{deal.name}</p>
-                    <p className="text-white/80 text-xs mt-1">{deal.tagline}</p>
-                  </div>
-                </article>
-              ))}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => scrollDeals("prev")}
+                aria-label="Previous deal"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/90 border border-gray-200 text-gray-700 shadow-sm flex items-center justify-center hover:bg-white transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollDeals("next")}
+                aria-label="Next deal"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/90 border border-gray-200 text-gray-700 shadow-sm flex items-center justify-center hover:bg-white transition-colors"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+
+              <div
+                ref={dealsCarouselRef}
+                className="flex flex-nowrap overflow-x-auto gap-4 snap-x snap-mandatory hide-scrollbar pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
+                {featuredDealsLoop.map((deal, index) => (
+                  <article
+                    key={`${deal.merchantId}-${index}`}
+                    className="relative shrink-0 w-64 h-[220px] rounded-3xl overflow-hidden snap-center"
+                    style={{
+                      backgroundImage: `linear-gradient(to top, rgba(17, 24, 39, 0.88) 22%, rgba(17, 24, 39, 0.18)), url(${deal.logoUrl})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center"
+                    }}
+                  >
+                    <span className="absolute top-3 left-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                      {deal.promoBadge}
+                    </span>
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <p className="text-white text-base font-semibold leading-tight">{deal.name}</p>
+                      <p className="text-white/80 text-xs mt-1">{deal.tagline}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </section>
 
