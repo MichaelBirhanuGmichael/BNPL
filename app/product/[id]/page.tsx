@@ -235,7 +235,7 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="px-5 py-6"
+        className="px-5 pt-6 pb-44"
       >
         <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">{product.name}</h1>
         <p className="text-[#9CA3AF] text-sm leading-relaxed mb-4">{product.description}</p>
@@ -365,7 +365,7 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Trust Badges */}
-        <div className="flex items-center justify-center gap-4 mb-24">
+        <div className="flex items-center justify-center gap-4 mb-6">
           <div className="flex items-center gap-1.5">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00D084" strokeWidth="2">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
