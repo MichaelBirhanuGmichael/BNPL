@@ -14,6 +14,8 @@ const products = [
     category: "Electronics",
     color: "#DBEAFE",
     icon: "tv",
+    image:
+      "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=1000&q=80",
     description: "Crystal UHD 4K Smart TV with HDR support and built-in streaming apps.",
     features: ["4K Ultra HD", "Smart TV", "HDR Support", "Voice Control"],
   },
@@ -26,6 +28,8 @@ const products = [
     category: "Fashion",
     color: "#FCE7F3",
     icon: "sneaker",
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80",
     description: "Iconic Air Max cushioning with a sleek, modern design for all-day comfort.",
     features: ["Air Max Cushion", "Breathable Mesh", "Rubber Outsole", "Lightweight"],
   },
@@ -38,6 +42,8 @@ const products = [
     category: "Home",
     color: "#F3E8FF",
     icon: "sofa",
+    image:
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=80",
     description: "Modular sectional sofa with removable covers and storage compartments.",
     features: ["Modular Design", "Storage Space", "Washable Covers", "10yr Warranty"],
   },
@@ -50,6 +56,8 @@ const products = [
     category: "Electronics",
     color: "#E5E7EB",
     icon: "laptop",
+    image:
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=1000&q=80",
     description: "Apple M3 Pro chip, 18GB RAM, 512GB SSD with Liquid Retina XDR display.",
     features: ["M3 Pro Chip", "18GB RAM", "512GB SSD", "18hr Battery"],
   },
@@ -62,6 +70,8 @@ const products = [
     category: "Fashion",
     color: "#FEF3C7",
     icon: "jacket",
+    image:
+      "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?auto=format&fit=crop&w=1000&q=80",
     description: "Premium wool-blend blazer with a tailored fit and satin lining.",
     features: ["Wool Blend", "Tailored Fit", "Satin Lining", "Two Buttons"],
   },
@@ -74,6 +84,8 @@ const products = [
     category: "Electronics",
     color: "#D1FAE5",
     icon: "phone",
+    image:
+      "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=1000&q=80",
     description: "A17 Pro chip, 256GB storage, titanium design with Action Button.",
     features: ["A17 Pro Chip", "256GB Storage", "Titanium Body", "48MP Camera"],
   },
@@ -203,10 +215,14 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
-        className="relative h-64 flex items-center justify-center"
+        className="relative h-64 overflow-hidden"
         style={{ backgroundColor: product.color }}
       >
-        <ProductIcon type={product.icon} className="w-32 h-32 text-[#1A1A1A]" />
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-full w-full object-cover"
+        />
         
         {/* Category Badge */}
         <div className="absolute top-4 right-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full">
@@ -459,7 +475,11 @@ export default function ProductDetailPage() {
                         className="w-16 h-16 rounded-xl flex items-center justify-center"
                         style={{ backgroundColor: product.color }}
                       >
-                        <ProductIcon type={product.icon} className="w-10 h-10 text-[#1A1A1A]" />
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="h-full w-full rounded-xl object-cover"
+                        />
                       </div>
                       <div className="flex-1">
                         <p className="font-semibold text-[#1A1A1A]">{product.name}</p>

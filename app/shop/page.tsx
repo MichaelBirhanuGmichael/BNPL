@@ -15,6 +15,8 @@ const products = [
     brand: "Samsung",
     bgColor: "#E0F2FE",
     icon: "tv",
+    image:
+      "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 2,
@@ -24,6 +26,8 @@ const products = [
     brand: "Nike",
     bgColor: "#FCE7F3",
     icon: "sneaker",
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 3,
@@ -33,6 +37,8 @@ const products = [
     brand: "IKEA",
     bgColor: "#F3F4F6",
     icon: "sofa",
+    image:
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 4,
@@ -42,6 +48,8 @@ const products = [
     brand: "Apple",
     bgColor: "#E5E7EB",
     icon: "laptop",
+    image:
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 5,
@@ -51,6 +59,8 @@ const products = [
     brand: "Zara",
     bgColor: "#FEF3C7",
     icon: "jacket",
+    image:
+      "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 6,
@@ -60,6 +70,8 @@ const products = [
     brand: "Samsung",
     bgColor: "#DBEAFE",
     icon: "phone",
+    image:
+      "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -239,12 +251,17 @@ export default function ShopPage() {
               className="rounded-2xl overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
               style={{ backgroundColor: "#FFFFFF", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}
             >
-              {/* Product Image Placeholder */}
+              {/* Product Image */}
               <div
-                className="aspect-square flex items-center justify-center p-6"
+                className="aspect-square"
                 style={{ backgroundColor: product.bgColor }}
               >
-                <ProductIcon type={product.icon} className="w-16 h-16 text-gray-600 opacity-70" />
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
               </div>
 
               {/* Product Info */}
@@ -344,7 +361,7 @@ export default function ShopPage() {
           <div className="w-14" />
 
           {/* Orders */}
-          <button className="flex flex-col items-center gap-1">
+          <button onClick={() => router.push("/orders")} className="flex flex-col items-center gap-1">
             <svg
               width="24"
               height="24"

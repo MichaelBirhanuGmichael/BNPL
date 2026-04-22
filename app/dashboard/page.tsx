@@ -102,8 +102,9 @@ export default function DashboardPage() {
               Make 3 Pay-in-Full transactions to prove your credit.
             </p>
 
-            <Link 
-              href="/shop"
+            <button
+              type="button"
+              onClick={() => router.push("/shop")}
               className="w-full h-12 rounded-full text-white font-semibold text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
               style={{ backgroundColor: "#00D084" }}
             >
@@ -111,7 +112,7 @@ export default function DashboardPage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
-            </Link>
+            </button>
             <Link
               href="/orders"
               className="w-full mt-3 h-12 rounded-full border border-[#D5DBE1] text-[#1A1A1A] font-semibold text-sm flex items-center justify-center active:scale-[0.98] transition-transform"
@@ -167,7 +168,7 @@ export default function DashboardPage() {
               }
               label="Shop"
               active={activeTab === "shop"}
-              onClick={() => setActiveTab("shop")}
+              onClick={() => router.push("/shop")}
             />
             {/* Spacer for QR button */}
             <div className="w-14" />
