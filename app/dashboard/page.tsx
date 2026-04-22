@@ -2,10 +2,14 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { MapPin, ShieldCheck } from "lucide-react"
 import { AppBottomNav } from "@/components/app-bottom-nav"
+import { mockDashboardData } from "@/data/mockDashboardData"
 
 export default function DashboardPage() {
   const router = useRouter()
+  const transactionProgress =
+    (mockDashboardData.creditBuilder.transactions.current / mockDashboardData.creditBuilder.transactions.required) * 100
 
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
@@ -27,7 +31,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-6 pb-36">
+        <div className="flex-1 overflow-y-auto px-6 pb-24">
           {/* BNPL Limit Card - Deep Charcoal */}
           <div 
             className="rounded-3xl p-6 mb-4 animate-fade-in"
@@ -45,7 +49,7 @@ export default function DashboardPage() {
               </div>
               <p className="text-white/70 text-sm font-medium">Available BNPL Limit</p>
             </div>
-            <p className="text-white text-5xl font-bold tracking-tight">0 ETB</p>
+              <p className="text-white text-5xl font-bold tracking-tight">{mockDashboardData.wallet.availableLimitEtb} ETB</p>
             <p className="text-white/50 text-xs mt-3">Complete credit building to unlock</p>
           </div>
 
@@ -84,18 +88,24 @@ export default function DashboardPage() {
             <div className="mb-4">
               <div className="flex justify-between text-xs text-[#9CA3AF] mb-2">
                 <span>Progress</span>
-                <span className="font-semibold text-[#1A1A1A]">1 of 3 transactions</span>
+                <span className="font-semibold text-[#1A1A1A]">
+                  {mockDashboardData.creditBuilder.transactions.current} of {mockDashboardData.creditBuilder.transactions.required} transactions
+                </span>
               </div>
               <div className="h-3 rounded-full bg-[#E5E7EB] overflow-hidden">
                 <div 
                   className="h-full rounded-full transition-all duration-500"
                   style={{ 
-                    width: "33.33%",
+                    width: `${transactionProgress}%`,
                     backgroundColor: "#00D084"
                   }}
                 />
               </div>
             </div>
+
+            <p className="text-xs text-[#9CA3AF] mb-3">
+              {mockDashboardData.creditBuilder.volumeEtb.current} of {mockDashboardData.creditBuilder.volumeEtb.required} ETB spent.
+            </p>
 
             <p className="text-[#6B7280] text-sm leading-relaxed mb-4">
               Make 3 Pay-in-Full transactions to prove your credit.
@@ -118,6 +128,80 @@ export default function DashboardPage() {
             >
               My Orders
             </Link>
+          </div>
+
+          {mockDashboardData.prosumerUpsell.show && (
+            <div className="rounded-3xl p-5 mt-4 border border-[#DBEAFE] bg-gradient-to-r from-blue-50 to-indigo-50 animate-fade-in">
+              <h3 className="text-[#1A1A1A] text-base font-bold">{mockDashboardData.prosumerUpsell.title}</h3>
+              <p className="text-[#6B7280] text-sm mt-1.5 leading-relaxed">{mockDashboardData.prosumerUpsell.subtitle}</p>
+              <button
+                type="button"
+                className="mt-4 h-10 px-4 rounded-full border border-[#93C5FD] text-[#1E40AF] text-sm font-semibold hover:bg-white/70 transition-colors"
+              >
+                {mockDashboardData.prosumerUpsell.ctaText}
+              </button>
+            </div>
+          )}
+
+          <section className="mt-6">
+            <h3 className="text-[#1A1A1A] text-lg font-bold mb-3">Featured Deals</h3>
+            <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {mockDashboardData.featuredDeals.map((deal) => (
+                <article
+                  key={deal.merchantId}
+                  className="relative shrink-0 w-[220px] h-[220px] rounded-3xl overflow-hidden snap-start"
+                  style={{
+                    backgroundImage: `linear-gradient(to top, rgba(17, 24, 39, 0.88) 22%, rgba(17, 24, 39, 0.18)), url(${deal.logoUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center"
+                  }}
+                >
+                  <span className="absolute top-3 left-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                    {deal.promoBadge}
+                  </span>
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="text-white text-base font-semibold leading-tight">{deal.name}</p>
+                    <p className="text-white/80 text-xs mt-1">{deal.tagline}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-6">
+            <h3 className="text-[#1A1A1A] text-lg font-bold mb-3">Stores Near You</h3>
+            <div className="space-y-3">
+              {mockDashboardData.nearbyStores.map((store) => (
+                <div key={store.branchId} className="rounded-2xl border border-[#E5E7EB] p-4 bg-white">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-full bg-[#ECFDF5] text-[#00D084] flex items-center justify-center shrink-0">
+                        <MapPin className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-[#1A1A1A] truncate">{store.name}</p>
+                        <p className="text-xs text-[#9CA3AF]">{store.type}</p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-medium text-[#4B5563] px-2.5 py-1 rounded-full bg-[#F3F4F6]">
+                      {store.distanceKm}km
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <div className="rounded-3xl p-4 mt-6 bg-emerald-50 border border-emerald-100">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-white/70 text-emerald-600 flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-[#1A1A1A] font-semibold">{mockDashboardData.trustBanner.title}</p>
+                <p className="text-xs text-[#6B7280] mt-1 leading-relaxed">{mockDashboardData.trustBanner.subtitle}</p>
+              </div>
+            </div>
           </div>
         </div>
 
