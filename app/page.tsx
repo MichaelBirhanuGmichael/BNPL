@@ -7,9 +7,6 @@ import { ArrowLeft } from "lucide-react";
 export default function LoginPage() {
   const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const isValidPhone = phoneNumber.length >= 9;
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "");
@@ -25,13 +22,7 @@ export default function LoginPage() {
   };
 
   const handleContinue = () => {
-    if (isValidPhone) {
-      setIsLoading(true);
-      // Simulate OTP verification delay
-      setTimeout(() => {
-        router.push("/verify");
-      }, 800);
-    }
+    router.push("/verify");
   };
 
   return (
@@ -75,18 +66,9 @@ export default function LoginPage() {
                 value={phoneNumber}
                 onChange={handlePhoneChange}
                 placeholder="900 000 000"
-                className="w-full h-[60px] px-5 bg-[#F5F5F5] rounded-2xl text-[18px] font-semibold text-[#1A1A1A] placeholder:text-[#D1D5DB] focus:outline-none focus:ring-2 focus:ring-[#00D084]/30 transition-all duration-200"
+                className="w-full h-[60px] px-5 bg-[#F5F5F5] rounded-2xl text-[18px] font-semibold text-[#1A1A1A] caret-[#00D084] placeholder:text-[#D1D5DB] focus:outline-none focus:ring-2 focus:ring-[#00D084]/30 transition-all duration-200"
                 autoFocus
               />
-              {/* Blinking cursor when empty */}
-              {phoneNumber.length === 0 && (
-                <div className="absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <span className="text-[18px] font-semibold text-[#D1D5DB]">
-                    9
-                  </span>
-                  <span className="inline-block w-[2px] h-[22px] bg-[#00D084] ml-[1px] align-middle animate-blink" />
-                </div>
-              )}
             </div>
           </div>
 
@@ -109,16 +91,12 @@ export default function LoginPage() {
         <div className="max-w-[400px] mx-auto px-6 pt-4 pb-8 safe-bottom opacity-0 animate-slide-up delay-300">
           <button
             type="button"
-            disabled={!isValidPhone}
+            onClick={handleContinue}
             className={`
               w-full h-[58px] rounded-full font-semibold text-[17px] 
               transition-all duration-300 ease-out
               active:scale-[0.98]
-              ${
-                isValidPhone
-                  ? "bg-[#00D084] text-white shadow-lg shadow-[#00D084]/25"
-                  : "bg-[#66E3B4] text-white/80 cursor-not-allowed"
-              }
+              bg-[#00D084] text-white shadow-lg shadow-[#00D084]/25
             `}
           >
             Continue
