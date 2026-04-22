@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Briefcase, ChevronLeft, ChevronRight, MapPin, ShieldCheck } from "lucide-react"
@@ -9,7 +9,10 @@ import { mockDashboardData } from "@/data/mockDashboardData"
 
 export default function DashboardPage() {
   const router = useRouter()
-  const dealsCarouselRef = useRef<HTMLDivElement>(null)
+  const [activeDealIndex, setActiveDealIndex] = useState(0)
+  const baseCardClass =
+    "rounded-2xl border border-gray-100 shadow-sm transition-all duration-200 ease-out hover:-translate-y-[1px] hover:shadow-md active:translate-y-0 active:scale-[0.995]"
+  const sectionTitleClass = "text-[#1A1A1A] text-lg font-bold mb-3"
   const transactionProgress =
     (mockDashboardData.creditBuilder.transactions.current / mockDashboardData.creditBuilder.transactions.required) * 100
   const remainingTransactions = Math.max(
@@ -20,68 +23,26 @@ export default function DashboardPage() {
     mockDashboardData.creditBuilder.volumeEtb.required - mockDashboardData.creditBuilder.volumeEtb.current,
     0
   )
-  const dealCardWidth = 272
-  const featuredDealsLoop = [...mockDashboardData.featuredDeals, ...mockDashboardData.featuredDeals]
+  const featuredDeals = mockDashboardData.featuredDeals
+  const activeDeal = featuredDeals[activeDealIndex]
 
   const scrollDeals = (direction: "prev" | "next") => {
-    const carousel = dealsCarouselRef.current
-    if (!carousel) return
-
-    carousel.scrollBy({
-      left: direction === "next" ? dealCardWidth : -dealCardWidth,
-      behavior: "smooth"
+    setActiveDealIndex((previousIndex) => {
+      if (direction === "next") {
+        return (previousIndex + 1) % featuredDeals.length
+      }
+      return (previousIndex - 1 + featuredDeals.length) % featuredDeals.length
     })
   }
 
   useEffect(() => {
-    const carousel = dealsCarouselRef.current
-    if (!carousel) return
-
-    let isPaused = false
-    let rafId = 0
-    let lastTimestamp = 0
-    const speedPxPerSecond = 30
-
-    const tick = (timestamp: number) => {
-      if (!lastTimestamp) lastTimestamp = timestamp
-      const deltaSeconds = (timestamp - lastTimestamp) / 1000
-      lastTimestamp = timestamp
-
-      if (!isPaused) {
-        carousel.scrollLeft += speedPxPerSecond * deltaSeconds
-        const halfwayPoint = carousel.scrollWidth / 2
-        if (carousel.scrollLeft >= halfwayPoint) {
-          carousel.scrollLeft -= halfwayPoint
-        }
-      }
-
-      rafId = window.requestAnimationFrame(tick)
-    }
-
-    const pause = () => {
-      isPaused = true
-    }
-
-    const resume = () => {
-      isPaused = false
-      lastTimestamp = 0
-    }
-
-    carousel.addEventListener("mouseenter", pause)
-    carousel.addEventListener("mouseleave", resume)
-    carousel.addEventListener("touchstart", pause, { passive: true })
-    carousel.addEventListener("touchend", resume)
-
-    rafId = window.requestAnimationFrame(tick)
-
+    const autoplay = window.setInterval(() => {
+      setActiveDealIndex((previousIndex) => (previousIndex + 1) % featuredDeals.length)
+    }, 4000)
     return () => {
-      window.cancelAnimationFrame(rafId)
-      carousel.removeEventListener("mouseenter", pause)
-      carousel.removeEventListener("mouseleave", resume)
-      carousel.removeEventListener("touchstart", pause)
-      carousel.removeEventListener("touchend", resume)
+      window.clearInterval(autoplay)
     }
-  }, [])
+  }, [featuredDeals.length])
 
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
@@ -103,17 +64,17 @@ export default function DashboardPage() {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-6 pb-24">
+        <div className="flex-1 overflow-y-auto px-6 pb-24 space-y-4">
           {/* BNPL Limit Card - Deep Charcoal */}
           <div 
-            className="rounded-3xl p-6 mb-4 animate-fade-in"
+            className="rounded-2xl p-5 animate-fade-in border border-[#1F2937]"
             style={{ 
               backgroundColor: "#1A1A1A",
               animationDelay: "0.1s",
-              boxShadow: "0 10px 40px rgba(26, 26, 26, 0.3), 0 0 60px rgba(0, 208, 132, 0.15)"
+              boxShadow: "0 8px 24px rgba(17, 24, 39, 0.24)"
             }}
           >
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-2.5">
               <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
                 <svg className="w-4 h-4 text-[#00D084]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -121,19 +82,19 @@ export default function DashboardPage() {
               </div>
               <p className="text-white/70 text-sm font-medium">Available BNPL Limit</p>
             </div>
-              <p className="text-white text-5xl font-bold tracking-tight">{mockDashboardData.wallet.availableLimitEtb} ETB</p>
-            <p className="text-white/50 text-xs mt-3">Complete credit building to unlock</p>
+              <p className="text-white text-[44px] leading-none font-bold tracking-tight">{mockDashboardData.wallet.availableLimitEtb} ETB</p>
+            <p className="text-white/60 text-xs mt-2.5">Complete credit building to unlock</p>
           </div>
 
           {/* Credit Builder Card - Soft Light Green */}
           <div 
-            className="rounded-3xl p-6 animate-fade-in"
+            className={`${baseCardClass} p-5 animate-fade-in`}
             style={{ 
               backgroundColor: "#ECFDF5",
               animationDelay: "0.2s" 
             }}
           >
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start justify-between mb-3">
               <div>
                 <div 
                   className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full mb-3"
@@ -144,7 +105,8 @@ export default function DashboardPage() {
                   </svg>
                   Credit Builder
                 </div>
-                <h2 className="text-[#1A1A1A] text-xl font-bold">Unlock your 1,500 ETB Limit!</h2>
+                <h2 className="text-[#1A1A1A] text-[36px] leading-[1.05] font-bold">{mockDashboardData.wallet.lockedTierEtb.toLocaleString()} ETB</h2>
+                <p className="text-[#1A1A1A] text-base font-semibold mt-1">Credit Builder Target</p>
               </div>
               <div 
                 className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -157,7 +119,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Visual Progress Bar - Gray Track with 33% Emerald Fill */}
-            <div className="mb-4">
+            <div className="mb-3">
               <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
                 <span>
                   {mockDashboardData.creditBuilder.transactions.current} / {mockDashboardData.creditBuilder.transactions.required} Transactions
@@ -178,7 +140,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <p className="text-[#6B7280] text-sm leading-relaxed mb-4">
+            <p className="text-[#6B7280] text-sm leading-relaxed mb-3">
               You&apos;re almost there! Complete {remainingTransactions} more Pay-in-Full{" "}
               {remainingTransactions === 1 ? "transaction" : "transactions"} totaling at least {remainingVolumeEtb.toLocaleString()} ETB to
               unlock your {mockDashboardData.wallet.lockedTierEtb.toLocaleString()} ETB BNPL limit.
@@ -187,7 +149,7 @@ export default function DashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/shop")}
-              className="w-full h-12 rounded-full text-white font-semibold text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
+              className="w-full h-11 rounded-full text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 ease-out hover:-translate-y-[1px] hover:shadow-md active:translate-y-0 active:scale-[0.985]"
               style={{ backgroundColor: "#00D084" }}
             >
               Start Shopping
@@ -197,36 +159,36 @@ export default function DashboardPage() {
             </button>
             <Link
               href="/orders"
-              className="w-full mt-3 h-12 rounded-full border border-[#D5DBE1] text-[#1A1A1A] font-semibold text-sm flex items-center justify-center active:scale-[0.98] transition-transform"
+              className="w-full mt-2.5 h-11 rounded-full border border-[#D5DBE1] text-[#1A1A1A] font-semibold text-sm flex items-center justify-center transition-all duration-200 ease-out hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0 active:scale-[0.985]"
             >
               My Orders
             </Link>
           </div>
 
           {mockDashboardData.prosumerUpsell.show && (
-            <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-5 mt-4 animate-fade-in">
+            <div className={`${baseCardClass} bg-white p-4 animate-fade-in`}>
               <div className="flex items-center gap-2">
                 <Briefcase className="w-5 h-5 text-emerald-500" />
                 <h3 className="text-gray-900 font-semibold">{mockDashboardData.prosumerUpsell.title.replace(" 🚀", "")}</h3>
               </div>
-              <p className="text-[#6B7280] text-sm mt-2 leading-relaxed">{mockDashboardData.prosumerUpsell.subtitle}</p>
+              <p className="text-[#6B7280] text-sm mt-1.5 leading-relaxed">{mockDashboardData.prosumerUpsell.subtitle}</p>
               <button
                 type="button"
-                className="mt-4 border border-emerald-500 text-emerald-600 font-medium rounded-full px-4 py-2 hover:bg-emerald-50 transition-colors"
+                className="mt-3 border border-emerald-500 text-emerald-600 font-medium rounded-full px-4 py-2 hover:bg-emerald-50 transition-all duration-200 ease-out hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0 active:scale-[0.985]"
               >
                 {mockDashboardData.prosumerUpsell.ctaText}
               </button>
             </div>
           )}
 
-          <section className="mt-6">
-            <h3 className="text-[#1A1A1A] text-lg font-bold mb-3">Featured Deals</h3>
-            <div className="relative">
+          <section className="pt-1">
+            <h3 className={sectionTitleClass}>Featured Deals</h3>
+            <div className="relative py-1.5">
               <button
                 type="button"
                 onClick={() => scrollDeals("prev")}
                 aria-label="Previous deal"
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/90 border border-gray-200 text-gray-700 shadow-sm flex items-center justify-center hover:bg-white transition-colors"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-700 shadow-sm flex items-center justify-center hover:bg-gray-50 transition-all duration-200 ease-out hover:scale-[1.03] active:scale-95"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -234,43 +196,39 @@ export default function DashboardPage() {
                 type="button"
                 onClick={() => scrollDeals("next")}
                 aria-label="Next deal"
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/90 border border-gray-200 text-gray-700 shadow-sm flex items-center justify-center hover:bg-white transition-colors"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-700 shadow-sm flex items-center justify-center hover:bg-gray-50 transition-all duration-200 ease-out hover:scale-[1.03] active:scale-95"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
 
-              <div
-                ref={dealsCarouselRef}
-                className="flex flex-nowrap overflow-x-auto gap-4 snap-x snap-mandatory hide-scrollbar pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              <div className="mx-12"
               >
-                {featuredDealsLoop.map((deal, index) => (
-                  <article
-                    key={`${deal.merchantId}-${index}`}
-                    className="relative shrink-0 w-64 h-[220px] rounded-3xl overflow-hidden snap-center"
-                    style={{
-                      backgroundImage: `linear-gradient(to top, rgba(17, 24, 39, 0.88) 22%, rgba(17, 24, 39, 0.18)), url(${deal.logoUrl})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center"
-                    }}
-                  >
-                    <span className="absolute top-3 left-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                      {deal.promoBadge}
-                    </span>
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <p className="text-white text-base font-semibold leading-tight">{deal.name}</p>
-                      <p className="text-white/80 text-xs mt-1">{deal.tagline}</p>
-                    </div>
-                  </article>
-                ))}
+                <article
+                  key={activeDeal.merchantId}
+                  className="relative w-full h-[180px] rounded-2xl overflow-hidden animate-fade-in shadow-sm"
+                  style={{
+                    backgroundImage: `linear-gradient(to top, rgba(17, 24, 39, 0.88) 22%, rgba(17, 24, 39, 0.18)), url(${activeDeal.logoUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center"
+                  }}
+                >
+                  <span className="absolute top-3 left-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                    {activeDeal.promoBadge}
+                  </span>
+                  <div className="absolute bottom-0 left-0 right-0 p-3.5">
+                    <p className="text-white text-xl leading-tight font-bold">{activeDeal.name}</p>
+                    <p className="text-white/80 text-sm mt-0.5">{activeDeal.tagline}</p>
+                  </div>
+                </article>
               </div>
             </div>
           </section>
 
-          <section className="mt-6">
-            <h3 className="text-[#1A1A1A] text-lg font-bold mb-3">Stores Near You</h3>
-            <div className="space-y-3">
+          <section className="pt-1">
+            <h3 className={sectionTitleClass}>Stores Near You</h3>
+            <div className="space-y-2.5">
               {mockDashboardData.nearbyStores.map((store) => (
-                <div key={store.branchId} className="rounded-2xl border border-[#E5E7EB] p-4 bg-white">
+                <div key={store.branchId} className={`${baseCardClass} p-3.5 bg-white`}>
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-9 h-9 rounded-full bg-[#ECFDF5] text-[#00D084] flex items-center justify-center shrink-0">
@@ -290,7 +248,7 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          <div className="rounded-3xl p-4 mt-6 bg-emerald-50 border border-emerald-100">
+          <div className="rounded-2xl p-4 bg-emerald-50 border border-emerald-100 shadow-sm">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-full bg-white/70 text-emerald-600 flex items-center justify-center shrink-0">
                 <ShieldCheck className="w-5 h-5" />
