@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Briefcase, ChevronLeft, ChevronRight, MapPin, ShieldCheck } from "lucide-react"
 import { AppBottomNav } from "@/components/app-bottom-nav"
+import { MainTopNav } from "@/components/main-top-nav"
 import { mockDashboardData } from "@/data/mockDashboardData"
 
 export default function DashboardPage() {
@@ -49,19 +50,7 @@ export default function DashboardPage() {
       {/* Main Content */}
       <div className="flex flex-col h-screen animate-slide-up">
         {/* Header */}
-        <div className="px-6 pt-14 pb-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[#9CA3AF] text-sm font-medium">Good morning</p>
-              <h1 className="text-[#1A1A1A] text-2xl font-bold mt-0.5">Welcome to MEREQ</h1>
-            </div>
-            <button className="w-10 h-10 rounded-full bg-[#F5F5F5] flex items-center justify-center">
-              <svg className="w-5 h-5 text-[#1A1A1A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-            </button>
-          </div>
-        </div>
+        <MainTopNav />
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-6 pb-24 space-y-4">

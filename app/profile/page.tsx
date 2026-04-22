@@ -14,6 +14,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { MainTopNav } from "@/components/main-top-nav";
 
 export default function ProfilePage() {
   return (
@@ -24,7 +25,8 @@ export default function ProfilePage() {
         transition={{ duration: 0.28 }}
         className="flex h-screen flex-col"
       >
-        <div className="flex-1 overflow-y-auto px-5 pb-32 pt-7">
+        <MainTopNav />
+        <div className="flex-1 overflow-y-auto px-5 pb-32 pt-1">
           <div className="flex flex-col items-center">
             <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#F1F3F4] text-3xl font-bold text-[#1A1A1A]">
               AK

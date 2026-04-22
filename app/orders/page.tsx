@@ -2,27 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { MainTopNav } from "@/components/main-top-nav";
 
 export default function OrdersPage() {
   const [tab, setTab] = useState<"ACTIVE" | "PAID_OFF">("ACTIVE");
 
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
-      <div className="flex h-screen flex-col px-5 pb-6 pt-5">
-        <div className="flex items-center gap-2">
-          <Link
-            href="/dashboard"
-            className="-ml-2 flex h-10 w-10 items-center justify-center rounded-full text-[#1A1A1A] transition hover:bg-[#F4F6F7]"
-            aria-label="Back to dashboard"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
+      <div className="flex h-screen flex-col pb-6">
+        <MainTopNav />
+
+        <div className="px-5">
           <h1 className="text-2xl font-bold text-[#1A1A1A]">My Orders</h1>
         </div>
 
-        <div className="mt-6 inline-flex w-full rounded-2xl bg-[#F2F4F5] p-1">
+        <div className="mt-4 inline-flex w-full rounded-2xl bg-[#F2F4F5] p-1 mx-5">
           <button
             type="button"
             onClick={() => setTab("ACTIVE")}
@@ -43,7 +38,7 @@ export default function OrdersPage() {
           </button>
         </div>
 
-        <div className="mt-6 space-y-4 overflow-y-auto pb-24">
+        <div className="mt-6 space-y-4 overflow-y-auto pb-24 px-5">
           <Link
             href="/order/1"
             className="block rounded-3xl border border-[#ECEFF1] p-4 text-left shadow-[0_12px_28px_rgba(26,26,26,0.06)]"

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { MainTopNav } from "@/components/main-top-nav";
 
 const brands = ["All", "Nike", "Samsung", "IKEA", "Zara", "Apple"];
 
@@ -159,58 +160,31 @@ export default function ShopPage() {
 
   return (
     <div className="min-h-screen w-full max-w-[400px] mx-auto flex flex-col" style={{ backgroundColor: "#FFFFFF" }}>
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="px-5 pt-14 pb-4"
-      >
-        {/* Search Bar */}
-        <div className="flex items-center gap-3">
-          <div
-            className="flex-1 flex items-center gap-3 px-4 py-3 rounded-full"
-            style={{ backgroundColor: "#F5F5F5" }}
+      <MainTopNav />
+
+      <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="px-5 pb-4">
+        <div className="flex items-center gap-3 px-4 py-3 rounded-full bg-[#F5F5F5]">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#9CA3AF"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#9CA3AF"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <input
-              type="text"
-              placeholder="Search brands or products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 bg-transparent outline-none text-sm"
-              style={{ color: "#1A1A1A" }}
-            />
-          </div>
-          <button
-            className="w-12 h-12 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: "#F5F5F5" }}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#1A1A1A"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-            </svg>
-          </button>
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Filter products in shop..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 bg-transparent outline-none text-sm"
+            style={{ color: "#1A1A1A" }}
+          />
         </div>
       </motion.div>
 
