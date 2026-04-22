@@ -16,8 +16,8 @@ export function AppBottomNav({ active }: { active: NavView }) {
   const router = useRouter();
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 pt-4 bg-gradient-to-t from-white via-white to-transparent">
-      <div className="relative rounded-full border border-gray-100 bg-white px-6 py-3 shadow-xl">
+    <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-[400px] -translate-x-1/2 px-5 pb-6 pt-4 pointer-events-none bg-gradient-to-t from-white via-white to-transparent">
+      <div className="relative rounded-full border border-gray-100 bg-white px-6 py-3 shadow-xl pointer-events-auto">
         <div className="flex items-center justify-around">
           <BottomItem
             icon={<Home className="h-5 w-5" />}
