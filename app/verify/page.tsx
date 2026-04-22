@@ -15,7 +15,7 @@ export default function VerifyOtpPage() {
     // Prototype flow: no validation, auto-continue on full OTP length.
     if (value.length === 6) {
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/verify/fayda-id");
       }, 350);
     }
   };
@@ -61,7 +61,7 @@ export default function VerifyOtpPage() {
         <div className="max-w-[400px] mx-auto px-6 pt-4 pb-8 safe-bottom opacity-0 animate-slide-up delay-300">
           <button
             type="button"
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push("/verify/fayda-id")}
             className="w-full h-[58px] rounded-full font-semibold text-[17px] bg-[#00D084] text-white shadow-lg shadow-[#00D084]/25 transition-all duration-300 ease-out active:scale-[0.98]"
           >
             Verify & Continue

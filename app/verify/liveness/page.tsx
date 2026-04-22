@@ -59,7 +59,7 @@ export default function LivenessPage() {
           <button
             type="button"
             disabled={!hasConsent}
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push("/verify/profile")}
             className="w-full h-14 rounded-full bg-emerald-500 text-white font-semibold text-base disabled:bg-gray-300 disabled:text-gray-500 transition-colors"
           >
             Scan Face
