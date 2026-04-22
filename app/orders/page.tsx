@@ -3,15 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AppBottomNav } from "@/components/app-bottom-nav";
-import { MainTopNav } from "@/components/main-top-nav";
 
 export default function OrdersPage() {
   const [tab, setTab] = useState<"ACTIVE" | "PAID_OFF">("ACTIVE");
 
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
-      <div className="flex h-screen flex-col pb-6">
-        <MainTopNav />
+      <div className="flex h-screen flex-col pb-6 pt-8">
 
         <div className="px-5">
           <h1 className="text-2xl font-bold text-[#1A1A1A]">My Orders</h1>

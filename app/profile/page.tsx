@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import {
   BriefcaseBusiness,
   CheckCircle2,
@@ -16,6 +17,8 @@ import {
 import { AppBottomNav } from "@/components/app-bottom-nav";
 
 export default function ProfilePage() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
       <motion.div
@@ -120,6 +123,7 @@ export default function ProfilePage() {
             />
             <button
               type="button"
+              onClick={() => router.push("/")}
               className="flex w-full items-center gap-3 rounded-2xl bg-[#F9F9F9] px-3 py-3 text-left"
             >
               <LogOut className="h-5 w-5 text-[#DC2626]" />
