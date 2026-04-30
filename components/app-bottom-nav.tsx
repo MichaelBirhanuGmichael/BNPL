@@ -38,7 +38,7 @@ export function AppBottomNav({ active }: { active: NavView }) {
             icon={<CreditCard className="h-5 w-5 stroke-[1.8]" />}
             label="Money"
             active={active === "money"}
-            onClick={() => router.push("/pre-approval")}
+            onClick={() => router.push("/money")}
           />
           <BottomItem
             icon={<UserRound className="h-5 w-5 stroke-[1.8]" />}
