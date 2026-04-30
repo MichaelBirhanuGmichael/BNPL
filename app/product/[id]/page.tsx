@@ -11,6 +11,7 @@ const MEREQ_MINT = "#31f5c2";
 const mockProducts = [
   {
     id: "1",
+    merchantId: "samsung",
     name: "Galaxy S26 Ultra Dual SIM 12GB",
     price: 3999,
     originalPrice: 4203,
@@ -26,6 +27,7 @@ const mockProducts = [
   },
   {
     id: "2",
+    merchantId: "shoa-supermarket",
     name: "Nike Air Force 1",
     price: 149,
     originalPrice: 435,
@@ -41,6 +43,7 @@ const mockProducts = [
   },
   {
     id: "3",
+    merchantId: "zemen-home",
     name: "Zemen Home Sofa Set",
     price: 32000,
     originalPrice: 35600,
@@ -56,6 +59,7 @@ const mockProducts = [
   },
   {
     id: "4",
+    merchantId: "amazon",
     name: 'MacBook Pro 14"',
     price: 89000,
     originalPrice: 94000,
@@ -71,6 +75,7 @@ const mockProducts = [
   },
   {
     id: "5",
+    merchantId: "carrefour",
     name: "Zara Wool Blazer",
     price: 6200,
     originalPrice: 7100,
@@ -86,6 +91,7 @@ const mockProducts = [
   },
   {
     id: "6",
+    merchantId: "shoa-supermarket",
     name: "iPhone 15 Pro Max",
     price: 78000,
     originalPrice: 82000,
@@ -106,8 +112,6 @@ export default function ProductDetailPage() {
   const router = useRouter();
   const [product, setProduct] = useState<(typeof mockProducts)[0] | null>(null);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
-  const [showCheckoutSheet, setShowCheckoutSheet] = useState(false);
-  const [selectedCheckoutOption, setSelectedCheckoutOption] = useState<"split" | "full">("split");
 
   useEffect(() => {
     const found = mockProducts.find((p) => p.id === params.id);
@@ -132,6 +136,7 @@ export default function ProductDetailPage() {
   }
 
   const installmentAmount = Math.round(product.price / 4);
+  const merchantHandoffId = product.merchantId ?? "samsung";
   const paymentSchedule = [
     { label: "Today", amount: installmentAmount },
     { label: "In 1 month", amount: installmentAmount },
@@ -282,10 +287,10 @@ export default function ProductDetailPage() {
       >
         <button
           type="button"
-          onClick={() => setShowCheckoutSheet(true)}
+          onClick={() => router.push(`/store-handoff/${merchantHandoffId}`)}
           className="w-full py-5 rounded-2xl tracking-tight font-medium text-white text-base bg-black shadow-[0_8px_24px_rgba(0,0,0,0.22)] active:scale-[0.98] transition-transform"
         >
-          Check out with MEREQ
+          Go to store ↗
         </button>
         <p className="text-center text-xs text-[#71717A] mt-3">By continuing, you agree to MEREQ payment terms.</p>
         <button
@@ -340,99 +345,6 @@ export default function ProductDetailPage() {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {showCheckoutSheet && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 z-40"
-              onClick={() => setShowCheckoutSheet(false)}
-            />
-            <motion.div
-              initial={{ opacity: 0, y: "100%" }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 320 }}
-              className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto bg-white rounded-t-[32px] z-50 p-6"
-              style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
-            >
-              <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5" />
-              <h3 className="text-lg font-medium text-[#000000]">Choose how you want to pay</h3>
-              <p className="text-sm text-[#71717A] mt-1 mb-4">Safe, instant approval with MEREQ.</p>
-
-              <button
-                type="button"
-                onClick={() => setSelectedCheckoutOption("split")}
-                className={`w-full rounded-2xl border p-4 text-left mb-3 ${
-                  selectedCheckoutOption === "split" ? "border-[#31f5c2] bg-[#31f5c214]" : "border-slate-200"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-[#000000]">Split in 4 (Interest-Free)</p>
-                    <p className="text-sm text-[#71717A]">Recommended</p>
-                  </div>
-                  {selectedCheckoutOption === "split" && (
-                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-black text-xs font-medium" style={{ backgroundColor: MEREQ_MINT }}>
-                      ✓
-                    </span>
-                  )}
-                </div>
-                <div className="grid grid-cols-4 gap-2 mt-3">
-                  {paymentSchedule.map((payment, index) => (
-                    <div key={`sheet-${payment.label}`} className="rounded-xl bg-white border border-slate-200 p-2 text-center">
-                      <div className="w-3.5 h-3.5 rounded-full mx-auto mb-1.5" style={{ backgroundColor: index === 0 ? MEREQ_MINT : "#E4E4E7" }} />
-                      <p className="text-[10px] text-[#71717A]">{payment.label}</p>
-                      <p className="text-[11px] font-medium text-[#000000]">Br {payment.amount.toLocaleString("en-ET")}</p>
-                    </div>
-                  ))}
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSelectedCheckoutOption("full")}
-                className={`w-full rounded-2xl border p-4 text-left ${
-                  selectedCheckoutOption === "full" ? "border-[#31f5c2] bg-[#31f5c214]" : "border-slate-200"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-[#000000]">Pay in Full</p>
-                    <p className="text-sm text-[#71717A]">Card / Telebirr</p>
-                  </div>
-                  {selectedCheckoutOption === "full" && (
-                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-black text-xs font-medium" style={{ backgroundColor: MEREQ_MINT }}>
-                      ✓
-                    </span>
-                  )}
-                </div>
-              </button>
-
-              <div className="mt-5 rounded-2xl bg-[#F4F4F5] p-4 flex items-center justify-between">
-                <span className="text-sm text-[#71717A]">Total to pay today</span>
-                <span className="text-base font-medium text-[#000000]">
-                  Br {(selectedCheckoutOption === "split" ? installmentAmount : product.price).toLocaleString("en-ET")}
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() =>
-                  router.push(
-                    `/checkout?productId=${product.id}&merchant=${encodeURIComponent(product.merchantName)}&plan=${selectedCheckoutOption}`
-                  )
-                }
-                className="w-full mt-5 py-5 rounded-2xl tracking-tight font-medium text-white text-base bg-black shadow-[0_8px_24px_rgba(0,0,0,0.22)]"
-              >
-                Confirm
-              </button>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

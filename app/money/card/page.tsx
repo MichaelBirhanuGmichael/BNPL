@@ -17,6 +17,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { increaseAvailableLimit, useAvailableLimit } from "@/lib/limit-state";
 
 const MINT = "#05FFC4";
 
@@ -30,7 +31,7 @@ type Txn = {
 };
 
 export default function MoneyCardPage() {
-  const [available, setAvailable] = useState(1000);
+  const available = useAvailableLimit();
   const [statementDue, setStatementDue] = useState(350);
   const [showTopUpSheet, setShowTopUpSheet] = useState(false);
   const [showPayEarlySheet, setShowPayEarlySheet] = useState(false);
@@ -42,7 +43,7 @@ export default function MoneyCardPage() {
   ]);
 
   const applyTopUp = () => {
-    setAvailable((v) => v + selectedTopUp);
+    increaseAvailableLimit(selectedTopUp);
     setHistory((prev) => [
       {
         id: `t-topup-${Date.now()}`,
@@ -58,7 +59,7 @@ export default function MoneyCardPage() {
 
   const confirmPayEarly = () => {
     if (statementDue <= 0) return;
-    setAvailable((v) => v + statementDue);
+    increaseAvailableLimit(statementDue);
     setHistory((prev) => [
       {
         id: `t-${Date.now()}`,

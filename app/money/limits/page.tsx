@@ -3,9 +3,10 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, Check, Search } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
 import { LazyImage } from "@/components/lazy-image";
+import { increaseAvailableLimit } from "@/lib/limit-state";
 
 const merchants = [
   {
@@ -58,6 +59,7 @@ export default function MoneyLimitsPage() {
   const [query, setQuery] = useState("");
   const [activeChip, setActiveChip] = useState<(typeof chips)[number]>("Restaurants & Food Delivery");
   const [selectedMerchant, setSelectedMerchant] = useState<(typeof merchants)[number] | null>(null);
+  const [isBoostSuccess, setIsBoostSuccess] = useState(false);
 
   const filtered = useMemo(() => {
     return merchants.filter(
@@ -121,7 +123,10 @@ export default function MoneyLimitsPage() {
                 </div>
               </div>
               <button
-                onClick={() => setSelectedMerchant(merchant)}
+                onClick={() => {
+                  setSelectedMerchant(merchant);
+                  setIsBoostSuccess(false);
+                }}
                 className="px-4 py-2 rounded-full bg-[#F3F4F6] border border-[#E5E7EB] text-sm font-semibold text-[#18181B] transition-colors active:bg-gray-200 hover:bg-gray-200"
               >
                 Get limit
@@ -152,21 +157,51 @@ export default function MoneyLimitsPage() {
               style={{ paddingBottom: "calc(3.5rem + env(safe-area-inset-bottom))" }}
             >
               <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5" />
-              <h3 className="text-3xl font-bold text-black text-center">
-                You can spend <span className="font-medium">Br</span> 1,000
-              </h3>
-              <p className="text-sm text-[#71717A] mt-2 text-center leading-relaxed">
-                Would you like to spend more at {selectedMerchant.name}?
-              </p>
-              <button className="w-full mt-6 py-4 rounded-2xl bg-[#000000] text-white text-base font-medium">
-                Yes, I would like more
-              </button>
-              <button
-                onClick={() => setSelectedMerchant(null)}
-                className="w-full mt-3 mb-1 py-4 rounded-2xl bg-[#F4F4F5] text-[#111827] text-base font-medium"
-              >
-                No, I&apos;m good
-              </button>
+              {!isBoostSuccess ? (
+                <>
+                  <h3 className="text-3xl font-bold text-black text-center">
+                    You can spend <span className="font-medium">Br</span> 1,000
+                  </h3>
+                  <p className="text-sm text-[#71717A] mt-2 text-center leading-relaxed">
+                    Would you like to spend more at {selectedMerchant.name}?
+                  </p>
+                  <button
+                    onClick={() => {
+                      increaseAvailableLimit(500);
+                      setIsBoostSuccess(true);
+                    }}
+                    className="w-full mt-6 py-4 rounded-2xl bg-[#000000] text-white text-base font-medium"
+                  >
+                    Yes, I would like more
+                  </button>
+                  <button
+                    onClick={() => setSelectedMerchant(null)}
+                    className="w-full mt-3 mb-1 py-4 rounded-2xl bg-[#F4F4F5] text-[#111827] text-base font-medium"
+                  >
+                    No, I&apos;m good
+                  </button>
+                </>
+              ) : (
+                <>
+                  <motion.div
+                    initial={{ scale: 0.7, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="w-14 h-14 rounded-full mx-auto flex items-center justify-center"
+                    style={{ backgroundColor: "#31f5c2" }}
+                  >
+                    <Check className="w-7 h-7 text-black" />
+                  </motion.div>
+                  <h3 className="text-2xl font-bold text-black text-center mt-4">
+                    Success! Your limit for {selectedMerchant.name} has been increased.
+                  </h3>
+                  <button
+                    onClick={() => setSelectedMerchant(null)}
+                    className="w-full mt-6 py-4 rounded-2xl bg-[#000000] text-white text-base font-medium"
+                  >
+                    Done
+                  </button>
+                </>
+              )}
             </motion.div>
           </>
         )}

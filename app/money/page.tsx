@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronRight, Coins, CreditCard, Percent, ShoppingBag } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { useAvailableLimit } from "@/lib/limit-state";
 
 const MINT = "#31f5c2";
 
@@ -20,6 +21,8 @@ const helpItems = [
 ];
 
 export default function MoneyPage() {
+  const availableLimit = useAvailableLimit();
+
   return (
     <div className="min-h-screen max-w-[400px] mx-auto bg-white">
       <div className="px-6 pt-8 pb-28 space-y-6">
@@ -48,8 +51,12 @@ export default function MoneyPage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium">MEREQ Card</p>
-                  <p className="text-3xl leading-none tracking-wide font-medium mt-1">Br 1,000</p>
-                  <p className="text-[12px] text-[#71717A] mt-1">Total limit Br 1,000</p>
+                  <p className="text-3xl leading-none tracking-wide font-medium mt-1">
+                    Br {availableLimit.toLocaleString("en-ET")}
+                  </p>
+                  <p className="text-[12px] text-[#71717A] mt-1">
+                    Total limit Br {availableLimit.toLocaleString("en-ET")}
+                  </p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-zinc-300" />
