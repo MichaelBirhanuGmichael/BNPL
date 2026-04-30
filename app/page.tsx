@@ -9,7 +9,7 @@ export default function OnboardingPage() {
   const router = useRouter();
 
   return (
-    <div className="relative h-screen w-full bg-black overflow-hidden max-w-[400px] mx-auto">
+    <div className="relative w-screen h-screen bg-black overflow-hidden">
       <motion.img
         src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1000&auto=format&fit=crop&q=80"
         alt="Premium shopping lifestyle"
@@ -19,21 +19,19 @@ export default function OnboardingPage() {
         transition={{ duration: 12, ease: "easeOut" }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/30 to-transparent" />
+      <div className="absolute inset-x-0 top-0 z-20 px-5 pt-[max(env(safe-area-inset-top),1.75rem)]">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-black/20 px-3 py-1.5 backdrop-blur-md">
+          <span className="text-[11px] tracking-[0.24em] font-semibold text-white/90">MEREQ</span>
+          <Shield className="w-3.5 h-3.5 text-white/80" />
+        </div>
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        className="absolute inset-x-4 bottom-0 rounded-[2rem] border border-white/20 bg-white/12 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,0,0,0.35)] px-6 pt-7 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+        className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[92%] rounded-[2rem] border border-white/20 border-t-white/30 bg-white/12 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,0,0,0.35)] px-6 pt-7 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
       >
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.45 }}
-          className="text-white/80 font-semibold tracking-[0.26em] text-[11px] uppercase mb-4"
-        >
-          MEREQ
-        </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
