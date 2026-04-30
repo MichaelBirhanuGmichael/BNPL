@@ -17,33 +17,32 @@ export function AppBottomNav({ active }: { active: NavView }) {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 w-full pointer-events-none">
-      <div className="mx-auto w-full max-w-[400px] px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-      <div className="relative h-20 w-full border-t border-gray-100 bg-white/80 backdrop-blur-lg shadow-[0_-4px_20px_rgba(0,0,0,0.03)] pointer-events-auto">
-        <div className="absolute inset-x-4 -top-7 rounded-full border border-gray-100 bg-white/90 px-6 py-3 shadow-[0_8px_22px_rgba(0,0,0,0.08)]">
-        <div className="flex items-center justify-around">
+      <div className="mx-auto w-full max-w-[400px] px-4 pb-[env(safe-area-inset-bottom,12px)]">
+      <div className="relative h-16 w-full rounded-full border-t border-white/40 bg-white/70 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.03)] pointer-events-auto mx-0 mb-2">
+        <div className="h-full flex items-center justify-around px-5">
           <BottomItem
-            icon={<Compass className="h-5 w-5 stroke-[1.8]" />}
+            icon={<Compass className="h-[22px] w-[22px] stroke-[1.8]" />}
             label="Discover"
             active={active === "discover"}
             onClick={() => router.push("/discover")}
           />
           <BottomItem
-            icon={<Search className="h-5 w-5 stroke-[1.8]" />}
+            icon={<Search className="h-[22px] w-[22px] stroke-[1.8]" />}
             label="Shop"
             active={active === "shop"}
             onClick={() => router.push("/shop")}
           />
 
-          <div className="w-14" />
+          <div className="w-16" />
 
           <BottomItem
-            icon={<CreditCard className="h-5 w-5 stroke-[1.8]" />}
+            icon={<CreditCard className="h-[22px] w-[22px] stroke-[1.8]" />}
             label="Money"
             active={active === "money"}
             onClick={() => router.push("/money")}
           />
           <BottomItem
-            icon={<UserRound className="h-5 w-5 stroke-[1.8]" />}
+            icon={<UserRound className="h-[22px] w-[22px] stroke-[1.8]" />}
             label="Profile"
             active={active === "profile"}
             onClick={() => router.push("/profile")}
@@ -53,13 +52,12 @@ export function AppBottomNav({ active }: { active: NavView }) {
         <button
           type="button"
           onClick={() => router.push("/checkout")}
-          className="absolute -top-7 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full bg-[#31f5c2] text-black shadow-[0_8px_22px_rgba(49,245,194,0.45),inset_0_2px_8px_rgba(255,255,255,0.6)]"
+          className="absolute -top-6 left-1/2 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-full bg-[#31f5c2] text-black shadow-[0_8px_22px_rgba(49,245,194,0.45),inset_0_2px_8px_rgba(255,255,255,0.6)]"
           aria-label="Open QR scanner"
         >
-          <QrCode className="h-7 w-7" />
+          <QrCode className="h-6 w-6" />
         </button>
         </div>
-      </div>
       </div>
     </div>
   );

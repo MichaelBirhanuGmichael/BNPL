@@ -90,7 +90,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-6 pb-[calc(10rem+env(safe-area-inset-bottom))] space-y-4">
+        <div className="flex-1 overflow-y-auto px-6 pb-[calc(5.25rem+env(safe-area-inset-bottom))] space-y-4">
           <section className="pt-1">
             <div className="flex items-center justify-between mb-3">
               <h3 className={sectionTitleClass}>Featured stores</h3>
@@ -355,7 +355,6 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-          <div className="h-2" />
         </div>
 
         <AppBottomNav active="discover" />
