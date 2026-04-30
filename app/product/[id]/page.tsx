@@ -181,7 +181,9 @@ export default function ProductDetailPage() {
           className="h-full w-full object-cover"
         />
         <div className="absolute top-4 right-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full">
-          <span className="text-xs font-medium text-[#71717A]">{product.category}</span>
+          <span className="text-xs font-medium text-[#0b7b64] rounded-full border border-[#31f5c266] px-2.5 py-1">
+            {product.category}
+          </span>
         </div>
       </motion.div>
 
@@ -207,26 +209,28 @@ export default function ProductDetailPage() {
           <button className="px-3.5 py-1.5 rounded-full bg-white text-xs font-medium text-[#000000] border border-slate-200">Follow</button>
         </div>
 
-        <h1 className="text-2xl font-medium text-[#000000] mb-1">{product.name}</h1>
-        <p className="text-[#71717A] text-sm leading-relaxed mb-4">{product.description}</p>
+        <div className="px-3.5">
+          <h1 className="text-2xl font-medium text-[#000000] mb-1">{product.name}</h1>
+          <p className="text-[#71717A] text-sm leading-relaxed mb-4">{product.description}</p>
 
-        <div className="mb-5">
-          <div className="flex items-center gap-2">
-            <p className="text-3xl font-medium text-[#000000]">Br {product.price.toLocaleString("en-ET")}</p>
-            <span className="rounded-full px-2.5 py-1 text-xs font-medium text-[#0b7b64]" style={{ backgroundColor: `${MEREQ_MINT}33` }}>
-              Earn Br 50 Cashback
-            </span>
-          </div>
-          <div className="mt-1 flex items-center gap-2">
-            <span className="text-sm text-[#71717A] line-through">Br {product.originalPrice.toLocaleString("en-ET")}</span>
-            <span className="text-sm text-[#71717A]">Total price</span>
+          <div className="mb-5">
+            <div className="flex items-center gap-2">
+              <p className="text-3xl font-medium text-[#000000]">Br {product.price.toLocaleString("en-ET")}</p>
+              <span className="rounded-full px-2.5 py-1 text-xs font-medium text-[#0b7b64]" style={{ backgroundColor: `${MEREQ_MINT}33` }}>
+                Earn Br 50 Cashback
+              </span>
+            </div>
+            <div className="mt-1 flex items-center gap-2">
+              <span className="text-sm text-[#71717A] line-through">Br {product.originalPrice.toLocaleString("en-ET")}</span>
+              <span className="text-sm text-[#71717A]">Total price</span>
+            </div>
           </div>
         </div>
 
         <button
           type="button"
           onClick={() => setShowHowItWorks(true)}
-          className="w-full rounded-3xl bg-[#F4F4F5] p-4 mb-7 text-left"
+          className="w-full rounded-3xl bg-[#F4F4F5] p-4 pb-8 mb-7 text-left"
         >
           <div className="flex items-center justify-between mb-3">
             <div>

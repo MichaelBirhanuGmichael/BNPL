@@ -27,6 +27,7 @@ export function MerchBrowser({
 
   const screenshotUrl = useMemo(() => {
     const map: Record<string, string> = {
+      samsung: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=1200&q=80",
       "m1": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=80",
       "m5": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80",
       "m6": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80",
@@ -40,9 +41,9 @@ export function MerchBrowser({
         <button onClick={onClose} className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center">
           <X className="w-4 h-4 text-zinc-700" />
         </button>
-        <div className="flex-1 h-8 rounded-full bg-zinc-100 flex items-center px-3 gap-2 text-xs text-zinc-700">
+        <div className="flex-1 h-8 rounded-full bg-zinc-100 flex items-center justify-center px-3 gap-2 text-xs text-zinc-700">
           <Lock className="w-3.5 h-3.5" />
-          <span className="truncate">{merchantUrl}</span>
+          <span className="truncate text-center font-mono tracking-wide">{merchantUrl}</span>
         </div>
       </div>
 
@@ -65,8 +66,7 @@ export function MerchBrowser({
         </p>
         <button
           onClick={() => setShowHowToPay(true)}
-          className="mt-3 px-3 py-2 rounded-full text-xs font-semibold text-black"
-          style={{ backgroundColor: "#31f5c2" }}
+          className="mt-3 px-3 py-2 rounded-full text-xs font-semibold text-[#31f5c2] border border-white/50 bg-transparent"
         >
           How to pay
         </button>
@@ -142,7 +142,7 @@ export function MerchBrowser({
               </p>
               <button
                 onClick={() => setShowAppPrompt(false)}
-                className="mt-5 w-full h-11 rounded-2xl bg-black text-white text-sm font-medium"
+                className="mt-5 w-full h-11 rounded-2xl bg-gradient-to-r from-[#121212] to-[#2a2a2a] text-white text-sm font-medium"
               >
                 Open App
               </button>

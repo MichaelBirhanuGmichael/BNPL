@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Link2 } from "lucide-react";
+import { Link2, Lock } from "lucide-react";
 import { LazyImage } from "@/components/lazy-image";
 
 const merchants: Record<string, { name: string; logo: string; url: string; hasApp?: boolean }> = {
@@ -75,7 +75,7 @@ export default function StoreHandoffPage() {
   }, [router, params.id, merchant.name, merchant.url, merchant.logo, merchant.hasApp]);
 
   return (
-    <div className="min-h-screen max-w-[400px] mx-auto bg-white flex items-center justify-center px-6">
+    <div className="min-h-screen max-w-[400px] mx-auto bg-radial-[at_50%_20%] from-[#ffffff] to-[#f9fafb] flex items-center justify-center px-6">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -83,25 +83,39 @@ export default function StoreHandoffPage() {
         className="w-full text-center"
       >
         <div className="flex items-center justify-center gap-3">
-          <div className="w-14 h-14 rounded-2xl bg-black text-white text-xl font-semibold flex items-center justify-center">M</div>
+          <motion.div
+            animate={{ boxShadow: ["0 0 0 0 rgba(49,245,194,0.0)", "0 0 0 10px rgba(49,245,194,0.18)", "0 0 0 0 rgba(49,245,194,0.0)"] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
+            className="w-20 h-20 rounded-[1.7rem] bg-black text-white text-3xl font-semibold flex items-center justify-center"
+          >
+            M
+          </motion.div>
           <div className="w-9 h-9 rounded-full bg-zinc-100 flex items-center justify-center">
             <Link2 className="w-4 h-4 text-zinc-500" />
           </div>
           <motion.div
-            animate={{ scale: [1, 1.06, 1] }}
-            transition={{ duration: 1.2, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
+            animate={{
+              scale: [1, 1.06, 1],
+              boxShadow: ["0 0 0 0 rgba(49,245,194,0.0)", "0 0 0 10px rgba(49,245,194,0.16)", "0 0 0 0 rgba(49,245,194,0.0)"],
+            }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
+            className="rounded-[1.7rem]"
           >
             <LazyImage
               src={merchant.logo}
               alt={merchant.name}
-              wrapperClassName="w-14 h-14 rounded-2xl border border-zinc-200"
+              wrapperClassName="w-20 h-20 rounded-[1.7rem] border border-zinc-200"
               className="w-full h-full object-cover"
             />
           </motion.div>
         </div>
-        <p className="mt-6 text-sm text-zinc-600 leading-relaxed">
+        <p className="mt-7 text-sm text-zinc-600 leading-7">
           Redirecting you to {merchant.name}. Your Br 1,000 credit limit is ready to use.
         </p>
+        <div className="mt-5 flex items-center justify-center gap-1.5 text-xs text-zinc-500">
+          <Lock className="w-3.5 h-3.5" />
+          <span>Secure Connection</span>
+        </div>
       </motion.div>
     </div>
   );
