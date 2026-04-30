@@ -7,12 +7,48 @@ import { ArrowLeft, Search } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
 
 const merchants = [
-  { id: "m1", name: "Level Shoes", category: "Fashion", logo: "L" },
-  { id: "m2", name: "Faces", category: "Fashion", logo: "F" },
-  { id: "m3", name: "L'Occitane", category: "Activities", logo: "O" },
-  { id: "m4", name: "Bloomingdale's", category: "Fashion", logo: "B" },
-  { id: "m5", name: "Shoa Supermarket", category: "Restaurants & Food Delivery", logo: "S" },
-  { id: "m6", name: "IKEA", category: "Home", logo: "I" },
+  {
+    id: "m1",
+    name: "Level Shoes",
+    subtext: "Luxury Fashion",
+    category: "Fashion",
+    logo: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=100&h=100&fit=crop",
+  },
+  {
+    id: "m2",
+    name: "Faces",
+    subtext: "Premium Beauty",
+    category: "Fashion",
+    logo: "https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?w=100&h=100&fit=crop",
+  },
+  {
+    id: "m3",
+    name: "L'Occitane",
+    subtext: "Luxury Care",
+    category: "Activities",
+    logo: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=100&h=100&fit=crop",
+  },
+  {
+    id: "m4",
+    name: "Bloomingdale's",
+    subtext: "Department Store",
+    category: "Fashion",
+    logo: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=100&h=100&fit=crop",
+  },
+  {
+    id: "m5",
+    name: "Shoa Supermarket",
+    subtext: "Everyday Essentials",
+    category: "Restaurants & Food Delivery",
+    logo: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=100&h=100&fit=crop",
+  },
+  {
+    id: "m6",
+    name: "IKEA",
+    subtext: "Home & Living",
+    category: "Home",
+    logo: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=100&h=100&fit=crop",
+  },
 ];
 
 const chips = ["Restaurants & Food Delivery", "Activities", "Fashion", "Home"] as const;
@@ -41,7 +77,10 @@ export default function MoneyLimitsPage() {
         </header>
 
         <div className="sticky top-0 z-20 bg-white pb-3 space-y-3">
-          <div className="flex items-center gap-2 rounded-full px-4 py-3 bg-[#F4F4F5]">
+          <div
+            className="flex items-center gap-2 rounded-full px-4 py-3 bg-[#F4F4F5]"
+            style={{ boxShadow: "inset 0 1px 2px rgba(15, 23, 42, 0.08)" }}
+          >
             <Search className="w-4 h-4 text-[#71717A]" />
             <input
               value={query}
@@ -69,14 +108,15 @@ export default function MoneyLimitsPage() {
           {filtered.map((merchant) => (
             <div key={merchant.id} className="py-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#F4F4F5] text-black text-sm font-medium flex items-center justify-center">
-                  {merchant.logo}
+                <img src={merchant.logo} alt={merchant.name} className="w-9 h-9 rounded-full object-cover border border-zinc-200" />
+                <div>
+                  <p className="text-sm font-medium text-black">{merchant.name}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-[#71717A]">{merchant.subtext}</p>
                 </div>
-                <p className="text-sm font-medium text-black">{merchant.name}</p>
               </div>
               <button
                 onClick={() => setSelectedMerchant(merchant)}
-                className="px-4 py-2 rounded-xl bg-[#EEF2F7] text-sm font-medium text-black"
+                className="px-4 py-2 rounded-xl bg-white border border-[#E5E7EB] text-sm font-medium text-[#31f5c2]"
               >
                 Get limit
               </button>
@@ -94,7 +134,7 @@ export default function MoneyLimitsPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/45 backdrop-blur-md z-40"
+              className="fixed inset-0 bg-black/35 backdrop-blur-xl z-[120]"
               onClick={() => setSelectedMerchant(null)}
             />
             <motion.div
@@ -102,20 +142,22 @@ export default function MoneyLimitsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 320 }}
-              className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto bg-white rounded-t-[32px] z-50 p-6"
-              style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+              className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto bg-white rounded-t-[32px] z-[130] p-6 pb-10 flex flex-col"
+              style={{ paddingBottom: "calc(2.5rem + env(safe-area-inset-bottom))" }}
             >
               <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5" />
-              <h3 className="text-2xl font-bold text-black text-center">You can spend Br 1,000</h3>
+              <h3 className="text-3xl font-bold text-black text-center">
+                You can spend <span className="font-medium">Br</span> 1,000
+              </h3>
               <p className="text-sm text-[#71717A] mt-2 text-center leading-relaxed">
                 Would you like to spend more at {selectedMerchant.name}?
               </p>
-              <button className="w-full mt-6 py-4 rounded-2xl bg-[#111827] text-white text-base font-medium">
+              <button className="w-full mt-6 py-4 rounded-2xl bg-[#000000] text-white text-base font-medium">
                 Yes, I would like more
               </button>
               <button
                 onClick={() => setSelectedMerchant(null)}
-                className="w-full mt-3 py-4 rounded-2xl bg-[#F4F4F5] text-[#71717A] text-base font-medium"
+                className="w-full mt-3 py-4 rounded-2xl bg-[#F4F4F5] text-[#111827] text-base font-medium"
               >
                 No, I&apos;m good
               </button>
