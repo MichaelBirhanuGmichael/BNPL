@@ -1,23 +1,44 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Shield } from "lucide-react";
+import { useEffect, useState } from "react";
+
+const heroImages = [
+  "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1445205170230-053b83016050?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1464863979621-258859e62245?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&auto=format&fit=crop&q=80",
+];
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const [activeImage, setActiveImage] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveImage((current) => (current + 1) % heroImages.length);
+    }, 4500);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
     <div className="relative w-screen h-screen bg-black overflow-hidden">
-      <motion.img
-        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1000&auto=format&fit=crop&q=80"
-        alt="Premium shopping lifestyle"
-        className="absolute inset-0 w-full h-full object-cover"
-        initial={{ scale: 1 }}
-        animate={{ scale: 1.1 }}
-        transition={{ duration: 12, ease: "easeOut" }}
-      />
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={heroImages[activeImage]}
+          src={heroImages[activeImage]}
+          alt="Premium shopping lifestyle"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ opacity: 0, scale: 1.02 }}
+          animate={{ opacity: 1, scale: 1.1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.15, ease: [0.4, 0, 0.2, 1] }}
+        />
+      </AnimatePresence>
       <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/30 to-transparent" />
       <div className="absolute inset-x-0 top-0 z-20 px-5 pt-[max(env(safe-area-inset-top),1.75rem)]">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-black/20 px-3 py-1.5 backdrop-blur-md">
@@ -77,6 +98,20 @@ export default function OnboardingPage() {
           </Link>
         </motion.div>
       </motion.div>
+
+      <div className="absolute left-0 right-0 bottom-[calc(17rem+env(safe-area-inset-bottom))] z-20 flex items-center justify-center gap-2">
+        {heroImages.map((_, index) => (
+          <button
+            key={`hero-option-${index}`}
+            type="button"
+            onClick={() => setActiveImage(index)}
+            aria-label={`Switch background ${index + 1}`}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              activeImage === index ? "w-7 bg-white" : "w-3 bg-white/50"
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
