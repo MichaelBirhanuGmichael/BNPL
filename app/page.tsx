@@ -7,10 +7,10 @@ import { Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const heroImages = [
-  "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1445205170230-053b83016050?w=1200&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1464863979621-258859e62245?w=1200&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=1400&auto=format&fit=crop&q=80", // phones
+  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1400&auto=format&fit=crop&q=80", // products
+  "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?w=1400&auto=format&fit=crop&q=80", // clothing
+  "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1400&auto=format&fit=crop&q=80", // product
 ];
 
 export default function OnboardingPage() {
@@ -99,19 +99,6 @@ export default function OnboardingPage() {
         </motion.div>
       </motion.div>
 
-      <div className="absolute left-0 right-0 bottom-[calc(17rem+env(safe-area-inset-bottom))] z-20 flex items-center justify-center gap-2">
-        {heroImages.map((_, index) => (
-          <button
-            key={`hero-option-${index}`}
-            type="button"
-            onClick={() => setActiveImage(index)}
-            aria-label={`Switch background ${index + 1}`}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              activeImage === index ? "w-7 bg-white" : "w-3 bg-white/50"
-            }`}
-          />
-        ))}
-      </div>
     </div>
   );
 }
