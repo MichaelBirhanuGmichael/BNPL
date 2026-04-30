@@ -16,8 +16,9 @@ export function AppBottomNav({ active }: { active: NavView }) {
   const router = useRouter();
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[80] mx-auto w-full max-w-[400px] px-5 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 pointer-events-none">
-      <div className="relative rounded-full border border-gray-100 bg-white px-6 py-3 shadow-xl pointer-events-auto">
+    <div className="fixed bottom-0 left-0 right-0 z-50 w-full pointer-events-none">
+      <div className="relative h-20 w-full border-t border-gray-100 bg-white/80 backdrop-blur-lg shadow-[0_-4px_20px_rgba(0,0,0,0.03)] pb-[env(safe-area-inset-bottom,16px)] pointer-events-auto">
+        <div className="absolute inset-x-4 -top-7 rounded-full border border-gray-100 bg-white/90 px-6 py-3 shadow-[0_8px_22px_rgba(0,0,0,0.08)]">
         <div className="flex items-center justify-around">
           <BottomItem
             icon={<Compass className="h-5 w-5 stroke-[1.8]" />}
@@ -56,6 +57,7 @@ export function AppBottomNav({ active }: { active: NavView }) {
         >
           <QrCode className="h-7 w-7" />
         </button>
+        </div>
       </div>
     </div>
   );

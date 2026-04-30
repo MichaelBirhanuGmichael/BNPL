@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-white m-0 p-0 w-full h-full">
       <body className={`${inter.variable} font-sans antialiased m-0 p-0 w-full min-h-screen overflow-x-hidden`}>
-        {children}
+        <main className="min-h-screen pb-24">{children}</main>
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>

@@ -85,6 +85,7 @@
   /* Prevent overscroll bounce on iOS */
   html, body {
     overscroll-behavior: none;
+    overscroll-behavior-y: none;
     -webkit-overflow-scrolling: touch;
   }
 }
