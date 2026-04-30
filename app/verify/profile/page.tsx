@@ -51,7 +51,7 @@ export default function VerifyProfilePage() {
 
   const handleContinue = (event: FormEvent) => {
     event.preventDefault();
-    router.push("/dashboard");
+    router.push("/discover");
   };
 
   return (

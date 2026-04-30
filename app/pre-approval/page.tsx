@@ -64,7 +64,7 @@ export default function PreApprovalPage() {
       >
         <div className="flex items-center gap-4">
           <Link
-            href="/dashboard"
+            href="/discover"
             className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">

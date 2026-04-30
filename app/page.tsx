@@ -26,7 +26,10 @@ export default function OnboardingPage() {
   }, []);
 
   return (
-    <div className="relative w-screen h-[100dvh] bg-black overflow-hidden overscroll-none">
+    <div
+      className="relative w-screen h-[100svh] min-h-[100svh] bg-black overflow-hidden overscroll-none"
+      style={{ height: "100dvh" }}
+    >
       <AnimatePresence mode="wait">
         <motion.img
           key={heroImages[activeImage]}

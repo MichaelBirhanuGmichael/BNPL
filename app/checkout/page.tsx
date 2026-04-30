@@ -96,7 +96,7 @@ export default function CheckoutPage() {
       <div className="relative z-30 flex items-center justify-between p-4 pt-12">
         <button
           type="button"
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push("/discover")}
           className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center"
           aria-label="Back to dashboard"
         >

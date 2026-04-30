@@ -12,16 +12,7 @@ export const metadata: Metadata = {
   title: "MEREQ - Smart Payments",
   description: "Pay smarter. Split purchases. Build credit.",
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-    ],
+    icon: "/icon.png",
     apple: "/apple-icon.png",
   },
 };

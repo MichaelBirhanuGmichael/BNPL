@@ -73,9 +73,9 @@ export default function DashboardPage() {
   }, [featuredDeals.length])
 
   return (
-    <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
+    <div className="h-[100dvh] bg-white max-w-[400px] mx-auto relative overflow-hidden">
       {/* Main Content */}
-      <div className="flex flex-col h-screen animate-slide-up">
+      <div className="flex flex-col h-full animate-slide-up">
         <div className="px-6 pt-4 pb-3 sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100">
           <div className="flex items-center gap-3 bg-[#F3F4F6] rounded-full py-3 px-4">
             <Search className="w-5 h-5 text-slate-400" />
@@ -90,7 +90,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-6 pb-24 space-y-4">
+        <div className="flex-1 overflow-y-auto px-6 pb-[calc(10rem+env(safe-area-inset-bottom))] space-y-4">
           <section className="pt-1">
             <div className="flex items-center justify-between mb-3">
               <h3 className={sectionTitleClass}>Featured stores</h3>
@@ -355,6 +355,7 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+          <div className="h-2" />
         </div>
 
         <AppBottomNav active="discover" />
