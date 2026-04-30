@@ -1,9 +1,10 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MerchBrowser } from "@/components/merch-browser";
 
-export default function StoreWebviewPage() {
+function StoreWebviewContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -24,5 +25,13 @@ export default function StoreWebviewPage() {
       hasNativeApp={hasNativeApp}
       onClose={() => router.push("/shop")}
     />
+  );
+}
+
+export default function StoreWebviewPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen max-w-[400px] mx-auto bg-white" />}>
+      <StoreWebviewContent />
+    </Suspense>
   );
 }
