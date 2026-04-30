@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Info, Share2 } from "lucide-react";
+import { BatteryFull, Cpu, Heart, Info, MonitorSmartphone, Share2 } from "lucide-react";
 import { LazyImage } from "@/components/lazy-image";
 
 const MEREQ_MINT = "#31f5c2";
@@ -143,6 +143,20 @@ export default function ProductDetailPage() {
     { label: "In 2 months", amount: installmentAmount },
     { label: "In 3 months", amount: product.price - installmentAmount * 3 },
   ];
+  const specRows =
+    product.category === "Electronics"
+      ? [
+          { icon: <MonitorSmartphone className="w-4 h-4" />, label: "Display", value: '6.8" Dynamic AMOLED' },
+          { icon: <Cpu className="w-4 h-4" />, label: "Processor", value: "Snapdragon 8 Gen 3" },
+          { icon: <Cpu className="w-4 h-4" />, label: "RAM", value: "12GB" },
+          { icon: <BatteryFull className="w-4 h-4" />, label: "Battery", value: "5000mAh" },
+        ]
+      : [
+          { icon: <MonitorSmartphone className="w-4 h-4" />, label: "Material", value: "Premium blend" },
+          { icon: <Cpu className="w-4 h-4" />, label: "Fit", value: "Tailored regular fit" },
+          { icon: <Cpu className="w-4 h-4" />, label: "Care", value: "Dry clean recommended" },
+          { icon: <BatteryFull className="w-4 h-4" />, label: "Season", value: "All-season wear" },
+        ];
 
   return (
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative font-sans">
@@ -255,7 +269,69 @@ export default function ProductDetailPage() {
           </div>
         </button>
 
-        <h3 className="text-lg font-medium text-[#000000] mb-3">Similar products</h3>
+        <div className="border-t border-zinc-100 pt-6">
+          <h3 className="text-lg font-medium text-[#000000] mb-3">Description</h3>
+          <div className="space-y-3 text-sm leading-7 text-[#52525b]">
+            <p>
+              Crafted for customers who want premium quality with predictable monthly budgeting, this item blends top-tier build quality with daily usability.
+            </p>
+            <p>
+              MEREQ partners directly with trusted merchants to ensure verified product authenticity, transparent pricing, and secure checkout every time.
+            </p>
+            <p>
+              Your purchase is protected with buyer safeguards, and you can track each installment clearly inside your Money Hub.
+            </p>
+          </div>
+        </div>
+
+        <div className="border-t border-zinc-100 pt-6 mt-6">
+          <h3 className="text-lg font-medium text-[#000000] mb-3">Technical Specifications</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {specRows.map((spec) => (
+              <div key={spec.label} className="rounded-2xl border border-zinc-100 p-3">
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-2 py-1 text-[11px] text-zinc-500">
+                  {spec.icon}
+                  <span>{spec.label}</span>
+                </div>
+                <p className="mt-2 text-sm font-medium text-zinc-900">{spec.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-zinc-100 pt-6 mt-6">
+          <h3 className="text-lg font-medium text-[#000000] mb-3">How MEREQ Works</h3>
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+            {[
+              "Choose MEREQ at checkout",
+              "Link your card securely",
+              "Split your payment in 4",
+            ].map((step, index) => (
+              <div key={step} className="min-w-[145px] rounded-2xl border border-zinc-100 bg-white p-3">
+                <p className="text-[11px] font-semibold text-zinc-500">Step {index + 1}</p>
+                <p className="mt-1 text-sm font-medium text-zinc-900">{step}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-zinc-100 pt-6 mt-6">
+          <h3 className="text-lg font-medium text-[#000000] mb-3">Reviews</h3>
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-zinc-100 p-3">
+              <p className="text-sm font-medium text-zinc-900">Verified buyer</p>
+              <p className="text-sm text-zinc-600 mt-1">Fast delivery, authentic product, and smooth MEREQ checkout.</p>
+            </div>
+            <div className="rounded-2xl border border-zinc-100 p-3">
+              <p className="text-sm font-medium text-zinc-900">Top review</p>
+              <p className="text-sm text-zinc-600 mt-1">Installments were clear and transparent, exactly like promised.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-zinc-100 pt-6 mt-6">
+          <h3 className="text-lg font-medium text-[#000000] mb-3">Similar products</h3>
+        </div>
         <div className="flex gap-3 overflow-x-auto snap-x pb-1 no-scrollbar">
           {similarProducts.slice(0, 6).map((item) => (
             <button
@@ -286,12 +362,16 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto p-5 bg-white border-t border-gray-100"
+        className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto p-5 bg-white/85 backdrop-blur-xl border-t border-zinc-100"
         style={{ paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom))" }}
       >
         <button
           type="button"
-          onClick={() => router.push(`/store-handoff/${merchantHandoffId}`)}
+          onClick={() =>
+            router.push(
+              `/store-handoff/${merchantHandoffId}?product=${encodeURIComponent(product.name)}&price=${product.price}`
+            )
+          }
           className="w-full py-5 rounded-2xl tracking-tight font-medium text-white text-base bg-black shadow-[0_8px_24px_rgba(0,0,0,0.22)] active:scale-[0.98] transition-transform"
         >
           Go to store ↗

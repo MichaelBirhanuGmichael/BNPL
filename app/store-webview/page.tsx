@@ -15,6 +15,8 @@ function StoreWebviewContent() {
     searchParams.get("logo") ??
     "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=120&h=120&fit=crop";
   const hasNativeApp = searchParams.get("app") === "1";
+  const productName = searchParams.get("product") ?? "Selected item";
+  const productPrice = Number(searchParams.get("price") ?? "1000");
 
   return (
     <MerchBrowser
@@ -22,6 +24,8 @@ function StoreWebviewContent() {
       merchantName={merchantName}
       merchantUrl={merchantUrl}
       merchantLogo={merchantLogo}
+      productName={productName}
+      productPrice={Number.isFinite(productPrice) ? productPrice : 1000}
       hasNativeApp={hasNativeApp}
       onClose={() => router.push("/shop")}
     />

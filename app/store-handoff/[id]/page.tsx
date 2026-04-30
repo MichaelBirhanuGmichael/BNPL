@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Link2, Lock } from "lucide-react";
@@ -74,6 +74,8 @@ const merchants: Record<string, { name: string; logo: string; url: string; hasAp
 export default function StoreHandoffPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
+  const [productName, setProductName] = useState("Selected item");
+  const [productPrice, setProductPrice] = useState("1000");
   const merchant = merchants[params.id] ?? {
     name: "Partner Store",
     logo: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=120&h=120&fit=crop",
@@ -82,15 +84,25 @@ export default function StoreHandoffPage() {
   };
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const nextProduct = urlParams.get("product");
+    const nextPrice = urlParams.get("price");
+    if (nextProduct) setProductName(nextProduct);
+    if (nextPrice) setProductPrice(nextPrice);
+  }, []);
+
+  useEffect(() => {
     const timer = window.setTimeout(() => {
       router.replace(
         `/store-webview?id=${params.id}&name=${encodeURIComponent(merchant.name)}&url=${encodeURIComponent(
           merchant.url
-        )}&logo=${encodeURIComponent(merchant.logo)}&app=${merchant.hasApp ? "1" : "0"}`
+        )}&logo=${encodeURIComponent(merchant.logo)}&app=${merchant.hasApp ? "1" : "0"}&product=${encodeURIComponent(
+          productName
+        )}&price=${encodeURIComponent(productPrice)}`
       );
     }, 1500);
     return () => window.clearTimeout(timer);
-  }, [router, params.id, merchant.name, merchant.url, merchant.logo, merchant.hasApp]);
+  }, [router, params.id, merchant.name, merchant.url, merchant.logo, merchant.hasApp, productName, productPrice]);
 
   return (
     <div className="min-h-screen max-w-[400px] mx-auto bg-radial-[at_50%_20%] from-[#ffffff] to-[#f9fafb] flex items-center justify-center px-6">

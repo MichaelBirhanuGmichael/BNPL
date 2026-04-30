@@ -1,15 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, X } from "lucide-react";
+import { Lock, RefreshCw, Share2, X } from "lucide-react";
 import { LazyImage } from "@/components/lazy-image";
+import { MereqOverlayCheckout } from "@/components/mereq-overlay-checkout";
 
 type MerchBrowserProps = {
   merchantId: string;
   merchantName: string;
   merchantLogo: string;
   merchantUrl: string;
+  productName: string;
+  productPrice: number;
   hasNativeApp?: boolean;
   onClose: () => void;
 };
@@ -19,11 +22,16 @@ export function MerchBrowser({
   merchantName,
   merchantLogo,
   merchantUrl,
+  productName,
+  productPrice,
   hasNativeApp = false,
   onClose,
 }: MerchBrowserProps) {
-  const [showHowToPay, setShowHowToPay] = useState(false);
+  const [showCheckoutOverlay, setShowCheckoutOverlay] = useState(false);
+  const [isCardReady, setIsCardReady] = useState(false);
+  const [activePlan, setActivePlan] = useState<"split" | "full" | null>(null);
   const [showAppPrompt, setShowAppPrompt] = useState(hasNativeApp);
+  const [loadingProgress, setLoadingProgress] = useState(12);
 
   const screenshotUrl = useMemo(() => {
     const map: Record<string, string> = {
@@ -35,8 +43,27 @@ export function MerchBrowser({
     return map[merchantId] ?? "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80";
   }, [merchantId]);
 
+  const splitAmount = Math.round(productPrice / 4);
+
+  useEffect(() => {
+    setLoadingProgress(16);
+    const timer = window.setInterval(() => {
+      setLoadingProgress((v) => {
+        const next = Math.min(v + 14, 100);
+        if (next >= 100) window.clearInterval(timer);
+        return next;
+      });
+    }, 170);
+    return () => window.clearInterval(timer);
+  }, [merchantId]);
+
   return (
     <div className="min-h-screen max-w-[400px] mx-auto bg-white relative overflow-hidden">
+      <motion.div
+        className="fixed top-0 left-0 h-[2px] bg-[#31f5c2] z-40"
+        animate={{ width: `${loadingProgress}%` }}
+        transition={{ duration: 0.18, ease: "easeOut" }}
+      />
       <div className="sticky top-0 z-30 px-4 pt-4 pb-3 bg-white/70 backdrop-blur-xl border-b border-zinc-100 flex items-center gap-2">
         <button onClick={onClose} className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center">
           <X className="w-4 h-4 text-zinc-700" />
@@ -45,11 +72,17 @@ export function MerchBrowser({
           <Lock className="w-3.5 h-3.5" />
           <span className="truncate text-center font-mono tracking-wide">{merchantUrl}</span>
         </div>
+        <button className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center">
+          <Share2 className="w-4 h-4 text-zinc-700" />
+        </button>
+        <button className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center">
+          <RefreshCw className="w-4 h-4 text-zinc-700" />
+        </button>
       </div>
 
-      <div className="px-4 pt-4 pb-40">
+      <div className="px-4 pt-3 pb-[calc(7rem+env(safe-area-inset-bottom))]">
         <div className="rounded-3xl overflow-hidden border border-zinc-100 shadow-sm">
-          <div className="h-[430px] bg-zinc-100">
+          <div className="h-[calc(100dvh-11.5rem-env(safe-area-inset-bottom))] bg-zinc-100">
             <LazyImage
               src={screenshotUrl}
               alt={`${merchantName} storefront`}
@@ -60,52 +93,22 @@ export function MerchBrowser({
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto rounded-t-3xl bg-black px-5 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] z-30">
-        <p className="text-white text-sm leading-relaxed">
-          Shop as usual. At checkout, select MEREQ to split your payment in 4.
+      <div className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto rounded-t-3xl bg-black/90 backdrop-blur-xl px-5 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] z-30">
+        <p className="text-white text-sm font-medium truncate">{productName}</p>
+        <p className="text-[#D4FFF4] text-xs mt-1">
+          {isCardReady && activePlan === "split"
+            ? `Br ${splitAmount.toLocaleString("en-ET")} Installment Active`
+            : activePlan === "full"
+            ? `Full payment ready: Br ${productPrice.toLocaleString("en-ET")}`
+            : `Pay Br ${splitAmount.toLocaleString("en-ET")} x 4`}
         </p>
         <button
-          onClick={() => setShowHowToPay(true)}
-          className="mt-3 px-3 py-2 rounded-full text-xs font-semibold text-[#31f5c2] border border-white/50 bg-transparent"
+          onClick={() => setShowCheckoutOverlay(true)}
+          className="mt-3 px-4 py-2 rounded-full text-xs font-semibold text-black bg-[#31f5c2]"
         >
-          How to pay
+          {isCardReady && activePlan === "split" ? "View Card" : "Pay with MEREQ"}
         </button>
       </div>
-
-      <AnimatePresence>
-        {showHowToPay && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowHowToPay(false)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-md z-40"
-            />
-            <motion.div
-              initial={{ opacity: 0, y: "100%" }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: "100%" }}
-              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto bg-white rounded-t-[28px] z-50 p-6"
-              style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
-            >
-              <h3 className="text-lg font-semibold text-black">Pay with MEREQ in 3 steps</h3>
-              <ol className="mt-3 space-y-2 text-sm text-zinc-600">
-                <li>1. Add items and proceed to checkout.</li>
-                <li>2. Choose MEREQ as your payment method.</li>
-                <li>3. Confirm split in 4 and place your order.</li>
-              </ol>
-              <button
-                onClick={() => setShowHowToPay(false)}
-                className="mt-5 w-full h-11 rounded-2xl bg-black text-white text-sm font-medium"
-              >
-                Got it
-              </button>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
 
       <AnimatePresence>
         {showAppPrompt && (
@@ -156,6 +159,21 @@ export function MerchBrowser({
           </>
         )}
       </AnimatePresence>
+
+      <MereqOverlayCheckout
+        open={showCheckoutOverlay}
+        merchantName={merchantName}
+        productName={productName}
+        totalPrice={productPrice}
+        onClose={() => setShowCheckoutOverlay(false)}
+        initialPlan={activePlan ?? "split"}
+        initialStep={isCardReady && activePlan === "split" ? "reveal" : "choose"}
+        onPlanConfirmed={(plan) => {
+          setActivePlan(plan);
+          setIsCardReady(plan === "split");
+          setShowCheckoutOverlay(false);
+        }}
+      />
     </div>
   );
 }
