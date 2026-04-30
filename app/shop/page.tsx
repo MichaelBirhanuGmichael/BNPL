@@ -94,7 +94,7 @@ const allProducts = [
     discountPercent: 18,
     brand: "Winner",
     bgColor: "#E2E8F0",
-    image: "https://images.unsplash.com/photo-1623071298598-8beaf9e67ef4?auto=format&fit=crop&w=700&q=80",
+    image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=700&q=80",
   },
   {
     id: 5,

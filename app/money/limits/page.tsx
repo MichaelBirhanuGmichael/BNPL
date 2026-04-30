@@ -19,7 +19,7 @@ const merchants = [
     name: "Faces",
     subtext: "Premium Beauty",
     category: "Fashion",
-    logo: "https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?w=100&h=100&fit=crop",
+    logo: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=100&h=100&fit=crop",
   },
   {
     id: "m3",
