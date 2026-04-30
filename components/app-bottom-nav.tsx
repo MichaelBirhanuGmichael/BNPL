@@ -51,7 +51,7 @@ export function AppBottomNav({ active }: { active: NavView }) {
         <button
           type="button"
           onClick={() => router.push("/checkout")}
-          className="absolute -top-7 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full bg-gradient-to-b from-[#1BDE89] to-[#00B86B] text-white shadow-[0_8px_22px_rgba(0,184,107,0.45)]"
+          className="absolute -top-7 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full bg-[#31f5c2] text-black shadow-[0_8px_22px_rgba(49,245,194,0.45),inset_0_2px_8px_rgba(255,255,255,0.6)]"
           aria-label="Open QR scanner"
         >
           <QrCode className="h-7 w-7" />

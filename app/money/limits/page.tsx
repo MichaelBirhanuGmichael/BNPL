@@ -94,7 +94,7 @@ export default function MoneyLimitsPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 z-40"
+              className="fixed inset-0 bg-black/45 backdrop-blur-md z-40"
               onClick={() => setSelectedMerchant(null)}
             />
             <motion.div
@@ -106,8 +106,8 @@ export default function MoneyLimitsPage() {
               style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
             >
               <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5" />
-              <h3 className="text-2xl font-bold text-black">You can spend Br 1,000</h3>
-              <p className="text-sm text-[#71717A] mt-2">
+              <h3 className="text-2xl font-bold text-black text-center">You can spend Br 1,000</h3>
+              <p className="text-sm text-[#71717A] mt-2 text-center leading-relaxed">
                 Would you like to spend more at {selectedMerchant.name}?
               </p>
               <button className="w-full mt-6 py-4 rounded-2xl bg-[#111827] text-white text-base font-medium">
@@ -115,7 +115,7 @@ export default function MoneyLimitsPage() {
               </button>
               <button
                 onClick={() => setSelectedMerchant(null)}
-                className="w-full mt-3 py-4 rounded-2xl bg-[#F4F4F5] text-black text-base font-medium"
+                className="w-full mt-3 py-4 rounded-2xl bg-[#F4F4F5] text-[#71717A] text-base font-medium"
               >
                 No, I&apos;m good
               </button>

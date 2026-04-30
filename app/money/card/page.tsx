@@ -47,18 +47,18 @@ export default function MoneyCardPage() {
           </button>
         </header>
 
-        <section className="rounded-3xl bg-[#F4F4F5] p-5">
-          <p className="text-sm text-[#71717A]">Available</p>
-          <div className="mt-2 inline-flex px-3 py-1 rounded-xl" style={{ backgroundColor: `${MINT}40` }}>
-            <p className="text-[2.5rem] leading-none font-bold text-black">Br {available.toFixed(2)}</p>
-          </div>
-          <p className="mt-2 text-sm text-[#71717A]">Total limit Br 1,000.00</p>
+        <section className="pt-1">
+          <p className="text-sm text-[#71717A]">
+            Available <span className="inline-flex ml-2 px-2 py-0.5 text-xs rounded-full text-[#0b7b64]" style={{ backgroundColor: `${MINT}40` }}>Live</span>
+          </p>
+          <p className="mt-2 text-[2.5rem] leading-none tracking-wide font-medium text-black">Br {available.toFixed(2)}</p>
+          <p className="mt-2 text-[12px] text-[#71717A]">Total limit Br 1,000.00</p>
           <div className="grid grid-cols-2 gap-3 mt-4">
-            <button className="h-11 rounded-2xl bg-white text-black text-sm font-medium flex items-center justify-center gap-2">
+            <button className="h-11 rounded-2xl bg-white border border-[#E5E7EB] text-black text-sm font-medium flex items-center justify-center gap-2">
               <Plus className="w-4 h-4" />
               Top up
             </button>
-            <Link href="/money/limits" className="h-11 rounded-2xl bg-white text-black text-sm font-medium flex items-center justify-center gap-2">
+            <Link href="/money/limits" className="h-11 rounded-2xl bg-white border border-[#E5E7EB] text-black text-sm font-medium flex items-center justify-center gap-2">
               <Store className="w-4 h-4" />
               Shop in-store
             </Link>
@@ -102,15 +102,20 @@ export default function MoneyCardPage() {
             <h2 className="text-2xl font-bold text-black">History</h2>
             <button className="px-3 py-1 rounded-full bg-white text-sm text-[#71717A]">View all</button>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-5">
             {history.map((item) => (
-              <div key={item.id} className="rounded-2xl bg-white p-3 flex items-center justify-between">
-                <div>
+              <div key={item.id} className="rounded-2xl bg-white border border-[#E5E7EB] py-4 px-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#F1F5F9] text-[#111827] text-xs font-medium flex items-center justify-center">
+                    {item.title.slice(0, 2)}
+                  </div>
+                  <div>
                   <p className="text-sm font-medium text-black">{item.title}</p>
-                  <p className="text-sm text-[#71717A]">{item.subtitle}</p>
+                    <p className="text-sm text-[#71717A]">{item.subtitle}</p>
+                  </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium text-black">{item.amount}</p>
+                  <p className="text-sm font-medium tracking-wide text-black">{item.amount}</p>
                   <p className={`text-sm ${item.declined ? "text-[#B4535F]" : "text-[#71717A]"}`}>{item.card}</p>
                 </div>
               </div>
