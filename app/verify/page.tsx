@@ -21,7 +21,7 @@ function VerifyOtpContent() {
   const [isLoading, setIsLoading] = useState(false);
   const otpInputRef = useRef<HTMLInputElement>(null);
 
-  const nextRoute = flow === "signup" ? "/verify/fayda-id" : "/dashboard";
+  const nextRoute = flow === "signup" ? "/verify/select-id" : "/discover";
 
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "").slice(0, 6);
