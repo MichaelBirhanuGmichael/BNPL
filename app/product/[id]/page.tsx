@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Info, Share2 } from "lucide-react";
 
+const MEREQ_MINT = "#31f5c2";
+
 const mockProducts = [
   {
     id: "1",
@@ -103,6 +105,8 @@ export default function ProductDetailPage() {
   const router = useRouter();
   const [product, setProduct] = useState<(typeof mockProducts)[0] | null>(null);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
+  const [showCheckoutSheet, setShowCheckoutSheet] = useState(false);
+  const [selectedCheckoutOption, setSelectedCheckoutOption] = useState<"split" | "full">("split");
 
   useEffect(() => {
     const found = mockProducts.find((p) => p.id === params.id);
@@ -142,11 +146,11 @@ export default function ProductDetailPage() {
         className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm px-6 py-4 flex items-center justify-between border-b border-gray-100"
       >
         <button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-[#F4F4F5] flex items-center justify-center active:scale-95 transition-transform">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.8" strokeLinecap="round">
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        <span className="text-base font-semibold text-[#000000]">Product details</span>
+        <span className="text-base font-medium text-[#000000]">Product details</span>
         <div className="flex items-center gap-2">
           <button className="w-10 h-10 rounded-full bg-[#F4F4F5] flex items-center justify-center">
             <Heart className="w-5 h-5 text-[#000000]" />
@@ -180,18 +184,23 @@ export default function ProductDetailPage() {
           <div className="flex items-center gap-3">
             <img src={product.merchantLogo} alt={product.merchantName} className="w-10 h-10 rounded-full object-cover border border-slate-200" />
             <div>
-              <p className="text-sm font-semibold text-[#000000]">{product.merchantName}</p>
+              <p className="text-sm font-medium text-[#000000]">{product.merchantName}</p>
               <p className="text-xs text-[#71717A]">{product.merchantType}</p>
             </div>
           </div>
-          <button className="px-3.5 py-1.5 rounded-full bg-white text-xs font-semibold text-[#000000] border border-slate-200">Follow</button>
+          <button className="px-3.5 py-1.5 rounded-full bg-white text-xs font-medium text-[#000000] border border-slate-200">Follow</button>
         </div>
 
-        <h1 className="text-2xl font-semibold text-[#000000] mb-1">{product.name}</h1>
+        <h1 className="text-2xl font-medium text-[#000000] mb-1">{product.name}</h1>
         <p className="text-[#71717A] text-sm leading-relaxed mb-4">{product.description}</p>
 
         <div className="mb-5">
-          <p className="text-3xl font-semibold text-[#000000]">Br {product.price.toLocaleString("en-ET")}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-3xl font-medium text-[#000000]">Br {product.price.toLocaleString("en-ET")}</p>
+            <span className="rounded-full px-2.5 py-1 text-xs font-medium text-[#0b7b64]" style={{ backgroundColor: `${MEREQ_MINT}33` }}>
+              Earn Br 50 Cashback
+            </span>
+          </div>
           <div className="mt-1 flex items-center gap-2">
             <span className="text-sm text-[#71717A] line-through">Br {product.originalPrice.toLocaleString("en-ET")}</span>
             <span className="text-sm text-[#71717A]">Total price</span>
@@ -205,7 +214,7 @@ export default function ProductDetailPage() {
         >
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-sm font-semibold text-[#000000]">Split in 4 with MEREQ</p>
+              <p className="text-sm font-medium text-[#000000]">Split in 4 with MEREQ</p>
               <p className="text-xs text-[#71717A]">No interest, no hidden fees</p>
             </div>
             <span className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center">
@@ -215,30 +224,33 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-4 gap-2">
             {paymentSchedule.map((payment, index) => (
               <div key={payment.label} className="rounded-2xl bg-white p-2 text-center border border-slate-200">
-                <div className={`w-6 h-6 rounded-full mx-auto mb-2 ${index === 0 ? "bg-black" : "bg-[#E4E4E7]"}`} />
+                <div
+                  className="w-4 h-4 rounded-full mx-auto mb-2"
+                  style={{ backgroundColor: index === 0 ? MEREQ_MINT : "#E4E4E7" }}
+                />
                 <p className="text-[10px] text-[#71717A]">{payment.label}</p>
-                <p className="text-xs font-semibold text-[#000000]">Br {payment.amount.toLocaleString("en-ET")}</p>
+                <p className="text-xs font-medium text-[#000000]">Br {payment.amount.toLocaleString("en-ET")}</p>
               </div>
             ))}
           </div>
         </button>
 
-        <h3 className="text-lg font-semibold text-[#000000] mb-3">Similar products</h3>
-        <div className="grid grid-cols-2 gap-3">
-          {similarProducts.slice(0, 4).map((item) => (
+        <h3 className="text-lg font-medium text-[#000000] mb-3">Similar products</h3>
+        <div className="flex gap-3 overflow-x-auto snap-x pb-1 no-scrollbar">
+          {similarProducts.slice(0, 6).map((item) => (
             <button
               key={item.id}
               type="button"
               onClick={() => router.push(`/product/${item.id}`)}
-              className="rounded-[24px] overflow-hidden bg-white text-left shadow-[0_2px_18px_rgba(0,0,0,0.06)]"
+              className="w-[170px] shrink-0 snap-start rounded-[24px] overflow-hidden bg-white text-left shadow-[0_2px_18px_rgba(0,0,0,0.06)]"
             >
               <div className="aspect-square bg-[#F4F4F5]">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
               </div>
               <div className="p-2.5">
                 <p className="text-xs text-[#71717A]">{item.merchantName}</p>
-                <p className="text-sm font-semibold text-[#000000] line-clamp-2">{item.name}</p>
-                <p className="mt-1 text-sm font-semibold text-[#000000]">Br {item.price.toLocaleString("en-ET")}</p>
+                <p className="text-sm font-medium text-[#000000] line-clamp-2">{item.name}</p>
+                <p className="mt-1 text-sm font-medium text-[#000000]">Br {item.price.toLocaleString("en-ET")}</p>
               </div>
             </button>
           ))}
@@ -254,12 +266,19 @@ export default function ProductDetailPage() {
       >
         <button
           type="button"
-          onClick={() => router.push(`/checkout?productId=${product.id}&merchant=${encodeURIComponent(product.merchantName)}`)}
-          className="w-full py-4 rounded-full font-semibold text-white text-base bg-black active:scale-[0.98] transition-transform"
+          onClick={() => setShowCheckoutSheet(true)}
+          className="w-full py-5 rounded-2xl tracking-tight font-medium text-white text-base bg-black shadow-[0_8px_24px_rgba(0,0,0,0.22)] active:scale-[0.98] transition-transform"
         >
           Check out with MEREQ
         </button>
         <p className="text-center text-xs text-[#71717A] mt-3">By continuing, you agree to MEREQ payment terms.</p>
+        <button
+          type="button"
+          onClick={() => router.push("/scanner")}
+          className="w-full mt-2 text-center text-sm text-[#71717A] underline underline-offset-2"
+        >
+          Buying in-store? Scan QR instead
+        </button>
       </motion.div>
 
       <AnimatePresence>
@@ -299,6 +318,100 @@ export default function ProductDetailPage() {
                 className="w-full mt-5 py-3.5 rounded-full bg-black text-white font-semibold"
               >
                 Got it
+              </button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCheckoutSheet && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 z-40"
+              onClick={() => setShowCheckoutSheet(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: "100%" }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 320 }}
+              className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto bg-white rounded-t-[32px] z-50 p-6"
+              style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+            >
+              <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5" />
+              <h3 className="text-lg font-medium text-[#000000]">Choose how you want to pay</h3>
+              <p className="text-sm text-[#71717A] mt-1 mb-4">Safe, instant approval with MEREQ.</p>
+
+              <button
+                type="button"
+                onClick={() => setSelectedCheckoutOption("split")}
+                className={`w-full rounded-2xl border p-4 text-left mb-3 ${
+                  selectedCheckoutOption === "split" ? "border-[#31f5c2] bg-[#31f5c214]" : "border-slate-200"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-[#000000]">Split in 4 (Interest-Free)</p>
+                    <p className="text-sm text-[#71717A]">Recommended</p>
+                  </div>
+                  {selectedCheckoutOption === "split" && (
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-black text-xs font-medium" style={{ backgroundColor: MEREQ_MINT }}>
+                      ✓
+                    </span>
+                  )}
+                </div>
+                <div className="grid grid-cols-4 gap-2 mt-3">
+                  {paymentSchedule.map((payment, index) => (
+                    <div key={`sheet-${payment.label}`} className="rounded-xl bg-white border border-slate-200 p-2 text-center">
+                      <div className="w-3.5 h-3.5 rounded-full mx-auto mb-1.5" style={{ backgroundColor: index === 0 ? MEREQ_MINT : "#E4E4E7" }} />
+                      <p className="text-[10px] text-[#71717A]">{payment.label}</p>
+                      <p className="text-[11px] font-medium text-[#000000]">Br {payment.amount.toLocaleString("en-ET")}</p>
+                    </div>
+                  ))}
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSelectedCheckoutOption("full")}
+                className={`w-full rounded-2xl border p-4 text-left ${
+                  selectedCheckoutOption === "full" ? "border-[#31f5c2] bg-[#31f5c214]" : "border-slate-200"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-[#000000]">Pay in Full</p>
+                    <p className="text-sm text-[#71717A]">Card / Telebirr</p>
+                  </div>
+                  {selectedCheckoutOption === "full" && (
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-black text-xs font-medium" style={{ backgroundColor: MEREQ_MINT }}>
+                      ✓
+                    </span>
+                  )}
+                </div>
+              </button>
+
+              <div className="mt-5 rounded-2xl bg-[#F4F4F5] p-4 flex items-center justify-between">
+                <span className="text-sm text-[#71717A]">Total to pay today</span>
+                <span className="text-base font-medium text-[#000000]">
+                  Br {(selectedCheckoutOption === "split" ? installmentAmount : product.price).toLocaleString("en-ET")}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  router.push(
+                    `/checkout?productId=${product.id}&merchant=${encodeURIComponent(product.merchantName)}&plan=${selectedCheckoutOption}`
+                  )
+                }
+                className="w-full mt-5 py-5 rounded-2xl tracking-tight font-medium text-white text-base bg-black shadow-[0_8px_24px_rgba(0,0,0,0.22)]"
+              >
+                Confirm
               </button>
             </motion.div>
           </>
