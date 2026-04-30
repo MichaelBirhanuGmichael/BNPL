@@ -26,7 +26,7 @@ export default function OnboardingPage() {
   }, []);
 
   return (
-    <div className="relative w-screen h-screen bg-black overflow-hidden">
+    <div className="relative w-screen h-[100dvh] bg-black overflow-hidden overscroll-none">
       <AnimatePresence mode="wait">
         <motion.img
           key={heroImages[activeImage]}
@@ -51,7 +51,7 @@ export default function OnboardingPage() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[92%] rounded-[2rem] border border-white/20 border-t-white/30 bg-white/12 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,0,0,0.35)] px-6 pt-7 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+        className="absolute left-1/2 -translate-x-1/2 bottom-[max(0.5rem,env(safe-area-inset-bottom))] w-[92%] rounded-[2rem] border border-white/20 border-t-white/30 bg-white/12 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,0,0,0.35)] px-6 pt-7 pb-6"
       >
         <motion.h1
           initial={{ opacity: 0, y: 14 }}
