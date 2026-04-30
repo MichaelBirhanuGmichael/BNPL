@@ -3,17 +3,43 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Briefcase, ChevronLeft, ChevronRight, MapPin, ShieldCheck } from "lucide-react"
+import { Briefcase, ChevronLeft, ChevronRight, Heart, MapPin, Search, ShieldCheck } from "lucide-react"
 import { AppBottomNav } from "@/components/app-bottom-nav"
-import { MainTopNav } from "@/components/main-top-nav"
 import { mockDashboardData } from "@/data/mockDashboardData"
+
+const featuredStores = [
+  { id: "s1", name: "Amazon", logo: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=200" },
+  { id: "s2", name: "Carrefour", logo: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200" },
+  { id: "s3", name: "Samsung", logo: "https://images.unsplash.com/photo-1610792516307-ea5acd9c3b00?w=200" },
+  { id: "s4", name: "Habesha Style", logo: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=200" },
+]
+
+const discoverProducts = [
+  {
+    id: 1,
+    name: "Galaxy S25 FE",
+    price: 2178,
+    originalPrice: 2699,
+    discountPercent: 19,
+    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    id: 2,
+    name: "Samsung Galaxy S25 5G",
+    price: 3250,
+    originalPrice: 3449,
+    discountPercent: 5,
+    image: "https://images.unsplash.com/photo-1610792516307-ea5acd9c3b00?auto=format&fit=crop&w=700&q=80",
+  },
+]
 
 export default function DashboardPage() {
   const router = useRouter()
   const [activeDealIndex, setActiveDealIndex] = useState(0)
+  const [searchQuery, setSearchQuery] = useState("")
   const baseCardClass =
     "rounded-2xl border border-gray-100 shadow-sm transition-all duration-200 ease-out hover:-translate-y-[1px] hover:shadow-md active:translate-y-0 active:scale-[0.995]"
-  const sectionTitleClass = "text-[#1A1A1A] text-lg font-bold mb-3"
+  const sectionTitleClass = "text-[#000000] text-lg font-semibold mb-3"
   const transactionProgress =
     (mockDashboardData.creditBuilder.transactions.current / mockDashboardData.creditBuilder.transactions.required) * 100
   const remainingTransactions = Math.max(
@@ -49,11 +75,41 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-white max-w-[400px] mx-auto relative overflow-hidden">
       {/* Main Content */}
       <div className="flex flex-col h-screen animate-slide-up">
-        {/* Header */}
-        <MainTopNav />
+        <div className="px-6 pt-4 pb-3 sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100">
+          <div className="flex items-center gap-3 bg-[#F3F4F6] rounded-full py-3 px-4">
+            <Search className="w-5 h-5 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Stores or products"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              className="flex-1 bg-transparent outline-none text-sm text-slate-700 placeholder:text-slate-400"
+            />
+          </div>
+        </div>
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-6 pb-24 space-y-4">
+          <section className="pt-1">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className={sectionTitleClass}>Featured stores</h3>
+              <button type="button" className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600">
+                View all
+              </button>
+            </div>
+            <div className="flex overflow-x-auto gap-4 pb-2 hide-scrollbar [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {featuredStores.map((store) => (
+                <article key={store.id} className="shrink-0 text-center w-16">
+                  <div className="relative mx-auto w-14 h-14">
+                    <img src={store.logo} alt={store.name} className="w-14 h-14 rounded-full bg-slate-100 object-cover border border-slate-200" />
+                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-white" />
+                  </div>
+                  <p className="mt-2 text-xs font-medium text-slate-700 leading-tight">{store.name}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
           {/* BNPL Limit Card - Deep Charcoal */}
           <div 
             className="rounded-2xl p-5 animate-fade-in border border-[#1F2937]"
@@ -214,6 +270,46 @@ export default function DashboardPage() {
           </section>
 
           <section className="pt-1">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className={sectionTitleClass}>Discover</h3>
+              <button type="button" onClick={() => router.push("/shop")} className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600">
+                View all
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {discoverProducts.map((product) => (
+                <article
+                  key={product.id}
+                  onClick={() => router.push(`/product/${product.id}`)}
+                  className="rounded-[24px] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)] overflow-hidden cursor-pointer"
+                >
+                  <div className="aspect-square relative bg-[#F4F4F5]">
+                    <button
+                      type="button"
+                      aria-label="Add to wishlist"
+                      className="absolute top-2 right-2 z-10 p-1.5 bg-white rounded-full text-gray-500 hover:text-red-500 shadow-[0_8px_20px_rgba(0,0,0,0.10)] transition-colors"
+                    >
+                      <Heart className="w-3.5 h-3.5" />
+                    </button>
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="p-2.5">
+                    <h4 className="text-sm font-semibold text-black line-clamp-2 leading-tight">{product.name}</h4>
+                    <p className="mt-1 text-lg font-semibold text-black">
+                      Br {Math.round(product.price / 4).toLocaleString("en-ET")} <span className="text-xs text-[#71717A] font-medium">/ mo</span>
+                    </p>
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <span className="text-[#71717A]">Br {product.price.toLocaleString("en-ET")}</span>
+                      <span className="text-[#71717A] line-through">Br {product.originalPrice.toLocaleString("en-ET")}</span>
+                      <span className="font-bold text-red-500">-{product.discountPercent}%</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="pt-1">
             <h3 className={sectionTitleClass}>Stores Near You</h3>
             <div className="space-y-2.5">
               {mockDashboardData.nearbyStores.map((store) => (
@@ -250,7 +346,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <AppBottomNav active="home" />
+        <AppBottomNav active="discover" />
       </div>
     </div>
   )

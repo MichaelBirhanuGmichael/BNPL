@@ -3,320 +3,277 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Headphones, Heart, Sparkles } from "lucide-react";
+import { Heart, Search } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+
+type CategoryItem = {
+  id: string;
+  title: string;
+  image: string;
+};
+
+const topCategories: CategoryItem[] = [
+  { id: "mobiles", title: "Mobiles", image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500" },
+  { id: "electronics", title: "Electronics", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500" },
+  { id: "jewellery", title: "Jewellery", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500" },
+];
+
+const categoryTabs = ["Women", "Men", "Kids"] as const;
+
+const tabCategories: Record<(typeof categoryTabs)[number], CategoryItem[]> = {
+  Women: [
+    { id: "clothing", title: "Clothing", image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500" },
+    { id: "shoes", title: "Shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" },
+    { id: "bags", title: "Bags", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" },
+    { id: "jewellery", title: "Jewellery", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500" },
+    { id: "electronics", title: "Electronics", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500" },
+    { id: "mobiles", title: "Mobiles", image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500" },
+  ],
+  Men: [
+    { id: "electronics", title: "Electronics", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500" },
+    { id: "mobiles", title: "Mobiles", image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500" },
+    { id: "shoes", title: "Shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" },
+    { id: "clothing", title: "Clothing", image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500" },
+    { id: "bags", title: "Bags", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" },
+    { id: "jewellery", title: "Jewellery", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500" },
+  ],
+  Kids: [
+    { id: "clothing", title: "Clothing", image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500" },
+    { id: "shoes", title: "Shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" },
+    { id: "electronics", title: "Electronics", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500" },
+    { id: "bags", title: "Bags", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" },
+    { id: "mobiles", title: "Mobiles", image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500" },
+    { id: "jewellery", title: "Jewellery", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500" },
+  ],
+};
+
+const featuredStores = [
+  { id: "amazon", name: "Amazon", logo: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200" },
+  { id: "carrefour", name: "Carrefour", logo: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200" },
+  { id: "samsung", name: "Samsung", logo: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=200" },
+  { id: "sheger-mart", name: "Sheger Mart", logo: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200" },
+  { id: "habesha-style", name: "Habesha Style", logo: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=200" },
+];
 
 const allProducts = [
   {
     id: 1,
-    name: 'Samsung 55" TV',
-    fullPrice: 45000,
-    monthlyPrice: 1500,
+    name: "Galaxy S26 Ultra Dual SIM 12GB",
+    price: 3999,
+    originalPrice: 4203,
+    discountPercent: 4,
     brand: "Samsung",
-    bgColor: "#E0F2FE",
-    image:
-      "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=800&q=80",
+    bgColor: "#E5E7EB",
+    image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=700&q=80",
   },
   {
     id: 2,
-    name: "Nike Air Max",
-    fullPrice: 8500,
-    monthlyPrice: 285,
+    name: "Nike Air Force 1",
+    price: 149,
+    originalPrice: 435,
+    discountPercent: 65,
     brand: "Nike",
-    bgColor: "#FCE7F3",
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+    bgColor: "#CBD5E1",
+    image: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=700&q=80",
   },
   {
     id: 3,
-    name: "IKEA Sofa Set",
-    fullPrice: 32000,
-    monthlyPrice: 1067,
-    brand: "IKEA",
-    bgColor: "#F3F4F6",
-    image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
+    name: "Real Gold Flat Spiga Chain",
+    price: 3599,
+    originalPrice: 5000,
+    discountPercent: 28,
+    brand: "Goldline",
+    bgColor: "#E5E7EB",
+    image: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=700&q=80",
   },
   {
     id: 4,
-    name: "MacBook Pro",
-    fullPrice: 120000,
-    monthlyPrice: 4000,
-    brand: "Apple",
-    bgColor: "#E5E7EB",
-    image:
-      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
+    name: "Winner Sky Electric Scooter",
+    price: 1099,
+    originalPrice: 1350,
+    discountPercent: 18,
+    brand: "Winner",
+    bgColor: "#E2E8F0",
+    image: "https://images.unsplash.com/photo-1623071298598-8beaf9e67ef4?auto=format&fit=crop&w=700&q=80",
   },
   {
     id: 5,
-    name: "Zara Jacket",
-    fullPrice: 4200,
-    monthlyPrice: 140,
-    brand: "Zara",
-    bgColor: "#FEF3C7",
-    image:
-      "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?auto=format&fit=crop&w=800&q=80",
+    name: "iPhone 17 Pro 256GB",
+    price: 4699,
+    originalPrice: 4699,
+    discountPercent: 0,
+    brand: "Apple",
+    bgColor: "#E2E8F0",
+    image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=700&q=80",
   },
   {
     id: 6,
-    name: "Samsung Phone",
-    fullPrice: 28000,
-    monthlyPrice: 934,
-    brand: "Samsung",
-    bgColor: "#DBEAFE",
-    image:
-      "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
+    name: "Yamaha PSR-SX900",
+    price: 7089,
+    originalPrice: 7440,
+    discountPercent: 5,
+    brand: "Yamaha",
+    bgColor: "#E5E7EB",
+    image: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=700&q=80",
   },
 ];
 
-const mockShopData = {
-  heroBanners: [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=800",
-      title: "Samsung Week",
-      subtitle: "0% Interest at Shoa Supermarket",
-    },
-  ],
-  brands: [
-    { id: "b1", name: "Nike", logo: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=200&auto=format&fit=crop" },
-    { id: "b2", name: "IKEA", logo: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=200&auto=format&fit=crop" },
-    { id: "b3", name: "Samsung", logo: "https://images.unsplash.com/photo-1588508065123-287b28e013da?q=80&w=200&auto=format&fit=crop" },
-    { id: "b4", name: "Apple", logo: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=200&auto=format&fit=crop" },
-    { id: "b5", name: "Zara", logo: "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?q=80&w=200&auto=format&fit=crop" },
-  ],
-  topDeals: allProducts.slice(0, 3),
-  forYouFeed: allProducts.slice(3),
-};
-
 export default function ShopPage() {
   const router = useRouter();
-  const [selectedBrand, setSelectedBrand] = useState("All");
+  const [activeTab, setActiveTab] = useState<(typeof categoryTabs)[number]>("Women");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filterProducts = (product: (typeof allProducts)[number]) => {
-    const matchesBrand = selectedBrand === "All" || product.brand === selectedBrand;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesBrand && matchesSearch;
+    return matchesSearch;
   };
 
-  const filteredDeals = mockShopData.topDeals.filter(filterProducts);
-  const filteredForYou = mockShopData.forYouFeed.filter(filterProducts);
+  const filteredProducts = allProducts.filter(filterProducts);
 
   const formatPrice = (price: number) => {
     return price.toLocaleString("en-ET");
   };
 
   return (
-    <div className="min-h-screen w-full max-w-[400px] mx-auto flex flex-col" style={{ backgroundColor: "#FFFFFF" }}>
+    <div className="min-h-screen w-full max-w-[400px] mx-auto flex flex-col bg-white">
       <motion.div
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="px-5 pt-6 pb-3 sticky top-0 z-20 bg-white/95 backdrop-blur-md"
+        className="px-6 pt-4 pb-3 sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100"
       >
-        <div className="flex items-center gap-2.5">
-          <div className="w-[85%] flex items-center gap-3 bg-slate-50 border border-slate-100 text-slate-900 placeholder:text-slate-400 rounded-full py-3 px-5 transition-all focus-within:ring-2 focus-within:ring-emerald-500/20">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#94A3B8"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
+        <div className="flex items-center gap-3 bg-[#F3F4F6] rounded-full py-3 px-4">
+          <Search className="w-5 h-5 text-slate-400" />
           <input
             type="text"
-            placeholder="Filter products in shop..."
+            placeholder="Stores or products"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 bg-transparent outline-none text-sm text-slate-900 placeholder:text-slate-400"
+            className="flex-1 bg-transparent outline-none text-sm text-slate-700 placeholder:text-slate-400"
           />
-          </div>
-          <button
-            type="button"
-            aria-label="Wishlist"
-            className="p-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-full transition-colors"
-          >
-            <Heart className="w-5 h-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => router.push("/care")}
-            aria-label="Customer support chat"
-            className="p-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-full transition-colors"
-          >
-            <Headphones className="w-5 h-5" />
-          </button>
         </div>
       </motion.div>
+      <div className="flex-1 px-6 pb-32 overflow-y-auto">
+        <section className="mt-4">
+          <h2 className="text-[1.55rem] font-black tracking-tight text-slate-900 mb-4">Top categories</h2>
+          <div className="grid grid-cols-3 gap-3">
+            {topCategories.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => router.push(`/shop/category/${item.id}`)}
+                className="rounded-[20px] bg-[#F3F4F6] p-3 min-h-[132px] text-left"
+              >
+                <div className="flex justify-center">
+                  <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded-2xl shadow-sm" />
+                </div>
+                <p className="mt-3 text-[15px] font-bold text-slate-900 leading-tight">{item.title}</p>
+              </button>
+            ))}
+          </div>
+        </section>
 
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-        className="px-5"
-      >
-        <div className="flex overflow-x-auto gap-4 hide-scrollbar py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {["All", ...mockShopData.brands.map((brand) => brand.name)].map((brandName) => {
-            const brandData = mockShopData.brands.find((item) => item.name === brandName);
-            return (
-            <button
-              key={brandName}
-              onClick={() => setSelectedBrand(brandName)}
-              className="shrink-0 flex flex-col items-center"
-            >
-              <div
-                className={`w-16 h-16 rounded-full border-2 overflow-hidden transition-colors ${
-                  selectedBrand === brandName ? "border-emerald-500" : "border-transparent"
+        <section className="mt-8">
+          <div className="flex gap-6 mb-4 border-b border-slate-200">
+            {categoryTabs.map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setActiveTab(tab)}
+                className={`pb-2 text-base font-semibold transition-colors ${
+                  activeTab === tab ? "text-black border-b-[3px] border-black" : "text-slate-400"
                 }`}
               >
-                {brandData ? (
-                  <img src={brandData.logo} alt={brandData.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full bg-emerald-50 text-emerald-700 flex items-center justify-center font-semibold text-sm">
-                    All
-                  </div>
-                )}
-              </div>
-              <span className="text-xs font-medium text-center mt-1 text-slate-700">{brandName}</span>
-            </button>
-            );
-          })}
-        </div>
-      </motion.div>
+                {tab}
+              </button>
+            ))}
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {tabCategories[activeTab].map((item) => (
+              <button
+                key={`${activeTab}-${item.id}`}
+                type="button"
+                onClick={() => router.push(`/shop/category/${item.id}`)}
+                className="rounded-[20px] bg-[#F3F4F6] p-3 min-h-[132px] text-left"
+              >
+                <div className="flex justify-center">
+                  <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded-2xl shadow-sm" />
+                </div>
+                <p className="mt-3 text-[15px] font-bold text-slate-900 leading-tight">{item.title}</p>
+              </button>
+            ))}
+          </div>
+        </section>
 
-      <div className="flex-1 px-5 pb-32 overflow-y-auto">
-        <div className="w-full h-[220px] rounded-3xl overflow-hidden relative mt-4 shadow-sm">
-          <img
-            src={mockShopData.heroBanners[0].image}
-            alt={mockShopData.heroBanners[0].title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent" />
-          <div className="absolute left-4 bottom-4">
-            <p className="text-white text-xl font-bold">{mockShopData.heroBanners[0].title}</p>
-            <p className="text-white/90 text-sm font-medium">{mockShopData.heroBanners[0].subtitle}</p>
-            <button className="mt-3 px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-semibold rounded-full w-fit">
-              Shop Collection →
+        <section className="mt-10">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-[1.55rem] font-black tracking-tight text-slate-900">Featured stores</h2>
+            <button type="button" className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600">
+              View all
             </button>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2 mb-4 mt-10">
-          <Sparkles className="w-5 h-5 text-emerald-500 fill-emerald-500/20" />
-          <h2 className="text-[1.35rem] font-black tracking-tighter text-slate-900">Top Deals</h2>
-        </div>
-        <div className="flex overflow-x-auto gap-4 snap-x hide-scrollbar [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {filteredDeals.map((product) => (
-            <article
-              key={product.id}
-              onClick={() => router.push(`/product/${product.id}`)}
-              className="relative w-[160px] shrink-0 snap-start rounded-2xl overflow-hidden cursor-pointer active:scale-[0.98] transition-transform bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]"
-            >
-              <span className="absolute top-2 left-2 z-10 bg-slate-900 text-white uppercase tracking-widest text-[9px] font-bold px-2.5 py-1 rounded-md">
-                Sale
-              </span>
-              <div
-                className="aspect-square relative"
-                style={{ backgroundColor: product.bgColor }}
-              >
-                <button
-                  type="button"
-                  aria-label="Save to wishlist"
-                  className="absolute top-2 right-2 z-10 p-1.5 bg-white/80 backdrop-blur-sm rounded-full text-gray-400 hover:text-red-500 transition-colors"
-                >
-                  <Heart className="w-3.5 h-3.5" />
-                </button>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-3">
-                <h3 className="text-sm font-bold text-slate-900 tracking-tight leading-snug">{product.name}</h3>
-                <p className="text-xs text-slate-400 line-through mt-1 font-medium">
-                  {formatPrice(product.fullPrice)} ETB
-                </p>
-                <div className="mt-1.5 flex items-baseline gap-1">
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">From</span>
-                  <span className="text-base font-black text-emerald-500 tracking-tight">{formatPrice(product.monthlyPrice)} ETB</span>
-                  <span className="text-[10px] font-medium text-slate-500">/mo</span>
+          <div className="flex overflow-x-auto gap-4 pb-2 hide-scrollbar [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {featuredStores.map((store) => (
+              <article key={store.id} className="shrink-0 text-center w-16">
+                <div className="relative mx-auto w-14 h-14">
+                  <img
+                    src={store.logo}
+                    alt={store.name}
+                    className="w-14 h-14 rounded-full bg-slate-100 object-cover border border-slate-200"
+                  />
+                  <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-white" />
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+                <p className="mt-2 text-xs font-medium text-slate-700 leading-tight">{store.name}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
-        <h2 className="text-[1.35rem] font-black tracking-tighter text-slate-900 mt-10 mb-4">Just For You</h2>
+        <div className="mt-10 mb-4 flex items-center justify-between">
+          <h2 className="text-[1.35rem] font-semibold tracking-tight text-black">Discover</h2>
+          <button type="button" onClick={() => router.push("/search")} className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600">
+            View all
+          </button>
+        </div>
         <div className="grid grid-cols-2 gap-4 pb-24">
-          {filteredForYou.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 + index * 0.05 }}
+              transition={{ duration: 0.4, delay: 0.08 + index * 0.04 }}
               onClick={() => router.push(`/product/${product.id}`)}
-              className="rounded-2xl overflow-hidden cursor-pointer active:scale-[0.98] transition-transform bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]"
+              className="rounded-[24px] overflow-hidden cursor-pointer active:scale-[0.98] transition-transform bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]"
             >
-              <div
-                className="aspect-square relative"
-                style={{ backgroundColor: product.bgColor }}
-              >
+              <div className="aspect-square relative rounded-b-none bg-[#F4F4F5]">
                 <button
                   type="button"
                   aria-label="Save to wishlist"
-                  className="absolute top-2 right-2 z-10 p-1.5 bg-white/80 backdrop-blur-sm rounded-full text-gray-400 hover:text-red-500 transition-colors"
+                  className="absolute top-2 right-2 z-10 p-1.5 bg-white rounded-full text-gray-500 hover:text-red-500 shadow-[0_8px_20px_rgba(0,0,0,0.10)] transition-colors"
                 >
                   <Heart className="w-3.5 h-3.5" />
                 </button>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
+                <img src={product.image} alt={product.name} className="h-full w-full object-cover" loading="lazy" />
               </div>
-              <div className="p-3">
-                <h3 className="text-sm font-bold text-slate-900 tracking-tight leading-snug">{product.name}</h3>
-                <p className="text-xs text-slate-400 line-through mt-1 font-medium">
-                  {formatPrice(product.fullPrice)} ETB
+              <div className="p-2.5">
+                <h3 className="text-sm font-semibold text-black line-clamp-2 leading-tight">{product.name}</h3>
+                <p className="mt-1 text-lg font-semibold text-black">
+                  Br {formatPrice(Math.round(product.price / 4))} <span className="text-xs text-[#71717A] font-medium">/ mo</span>
                 </p>
-                <div className="mt-1.5 flex items-baseline gap-1">
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">From</span>
-                  <span className="text-base font-black text-emerald-500 tracking-tight">{formatPrice(product.monthlyPrice)} ETB</span>
-                  <span className="text-[10px] font-medium text-slate-500">/mo</span>
+                <div className="flex items-center gap-1.5 text-xs">
+                  <span className="text-[#71717A]">Br {formatPrice(product.price)}</span>
+                  <span className="text-[#71717A] line-through">Br {formatPrice(product.originalPrice)}</span>
+                  {product.discountPercent > 0 && <span className="font-bold text-red-500">-{product.discountPercent}%</span>}
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {filteredDeals.length === 0 && filteredForYou.length === 0 && (
+        {filteredProducts.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#94A3B8"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <p className="mt-4 text-sm text-slate-400">
-              No products found
-            </p>
+            <Search className="w-10 h-10 text-slate-300" />
+            <p className="mt-4 text-sm text-slate-400">No products found</p>
           </div>
         )}
       </div>

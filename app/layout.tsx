@@ -11,7 +11,6 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "MEREQ - Smart Payments",
   description: "Pay smarter. Split purchases. Build credit.",
-  generator: "v0.app",
   icons: {
     icon: [
       {
@@ -21,10 +20,6 @@ export const metadata: Metadata = {
       {
         url: "/icon-dark-32x32.png",
         media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
       },
     ],
     apple: "/apple-icon.png",

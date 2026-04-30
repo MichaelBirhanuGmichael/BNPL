@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  ClipboardList,
-  Home,
+  Compass,
+  CreditCard,
   QrCode,
-  ShoppingBag,
-  User,
+  Search,
+  UserRound,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
-type NavView = "home" | "shop" | "orders" | "profile";
+type NavView = "discover" | "shop" | "money" | "profile";
 
 export function AppBottomNav({ active }: { active: NavView }) {
   const router = useRouter();
@@ -20,13 +20,13 @@ export function AppBottomNav({ active }: { active: NavView }) {
       <div className="relative rounded-full border border-gray-100 bg-white px-6 py-3 shadow-xl pointer-events-auto">
         <div className="flex items-center justify-around">
           <BottomItem
-            icon={<Home className="h-5 w-5" />}
-            label="Home"
-            active={active === "home"}
+            icon={<Compass className="h-5 w-5 stroke-[1.8]" />}
+            label="Discover"
+            active={active === "discover"}
             onClick={() => router.push("/dashboard")}
           />
           <BottomItem
-            icon={<ShoppingBag className="h-5 w-5" />}
+            icon={<Search className="h-5 w-5 stroke-[1.8]" />}
             label="Shop"
             active={active === "shop"}
             onClick={() => router.push("/shop")}
@@ -35,13 +35,13 @@ export function AppBottomNav({ active }: { active: NavView }) {
           <div className="w-14" />
 
           <BottomItem
-            icon={<ClipboardList className="h-5 w-5" />}
-            label="Orders"
-            active={active === "orders"}
-            onClick={() => router.push("/orders")}
+            icon={<CreditCard className="h-5 w-5 stroke-[1.8]" />}
+            label="Money"
+            active={active === "money"}
+            onClick={() => router.push("/pre-approval")}
           />
           <BottomItem
-            icon={<User className="h-5 w-5" />}
+            icon={<UserRound className="h-5 w-5 stroke-[1.8]" />}
             label="Profile"
             active={active === "profile"}
             onClick={() => router.push("/profile")}
@@ -51,7 +51,7 @@ export function AppBottomNav({ active }: { active: NavView }) {
         <button
           type="button"
           onClick={() => router.push("/checkout")}
-          className="absolute -top-7 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full bg-[#00D084] text-white shadow-[0_4px_20px_rgba(0,208,132,0.5)]"
+          className="absolute -top-7 left-1/2 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full bg-gradient-to-b from-[#1BDE89] to-[#00B86B] text-white shadow-[0_8px_22px_rgba(0,184,107,0.45)]"
           aria-label="Open QR scanner"
         >
           <QrCode className="h-7 w-7" />
@@ -77,10 +77,10 @@ function BottomItem({
       type="button"
       onClick={onClick}
       className="flex flex-col items-center gap-0.5"
-      style={{ color: active ? "#00D084" : "#9CA3AF" }}
+      style={{ color: active ? "#000000" : "#9CA3AF" }}
     >
       {icon}
-      <span className="text-[10px] font-medium">{label}</span>
+      <span className="text-[10px] font-medium tracking-tight">{label}</span>
     </button>
   );
 }

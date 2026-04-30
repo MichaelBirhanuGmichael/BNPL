@@ -77,7 +77,7 @@ export default function OrdersPage() {
           </div>
         </div>
       </div>
-      <AppBottomNav active="orders" />
+      <AppBottomNav active="money" />
     </div>
   );
 }
