@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Shield } from "lucide-react";
@@ -8,44 +9,76 @@ export default function OnboardingPage() {
   const router = useRouter();
 
   return (
-    <div className="relative h-screen w-full bg-gray-900 overflow-hidden max-w-[400px] mx-auto">
-      <img
-        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800&auto=format&fit=crop"
+    <div className="relative h-screen w-full bg-black overflow-hidden max-w-[400px] mx-auto">
+      <motion.img
+        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1000&auto=format&fit=crop&q=80"
         alt="Premium shopping lifestyle"
-        className="absolute top-0 left-0 w-full h-[65%] object-cover"
+        className="absolute inset-0 w-full h-full object-cover"
+        initial={{ scale: 1 }}
+        animate={{ scale: 1.1 }}
+        transition={{ duration: 12, ease: "easeOut" }}
       />
-      <div className="absolute top-0 left-0 w-full h-[65%] bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/30 to-transparent" />
 
-      <div className="absolute bottom-0 left-0 w-full bg-white rounded-t-[40px] shadow-[0_-20px_40px_rgba(0,0,0,0.1)] px-8 pt-10 pb-[calc(3rem+env(safe-area-inset-bottom))] flex flex-col">
-        <p className="text-emerald-500 font-bold tracking-widest text-sm uppercase mb-4">MEREQ</p>
-        <h1 className="text-[2.75rem] font-black tracking-tighter text-slate-900 leading-[1.05]">Shop now. Pay with confidence.</h1>
-        <p className="text-slate-500 text-[1.05rem] leading-relaxed mt-5 font-medium">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        className="absolute inset-x-4 bottom-0 rounded-[2rem] border border-white/20 bg-white/12 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,0,0,0.35)] px-6 pt-7 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+      >
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.45 }}
+          className="text-white/80 font-semibold tracking-[0.26em] text-[11px] uppercase mb-4"
+        >
+          MEREQ
+        </motion.p>
+        <motion.h1
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.24, duration: 0.5 }}
+          className="text-4xl font-bold tracking-tighter text-white leading-[1.05]"
+        >
+          Shop now. Pay with confidence.
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.33, duration: 0.5 }}
+          className="text-white/70 text-[15px] leading-7 mt-4"
+        >
           Discover trusted merchants, split purchases responsibly, and build your credit profile with MEREQ.
-        </p>
+        </motion.p>
 
-        <div className="flex items-center gap-2 bg-slate-100/80 backdrop-blur-sm px-4 py-3 rounded-2xl w-fit mt-8">
-          <Shield className="w-4 h-4 text-slate-700 fill-slate-700" />
-          <span className="text-sm font-semibold text-slate-700">Bank-grade security & buyer protection</span>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.45 }}
+          className="flex items-center gap-2 bg-white/12 border border-white/20 px-4 py-2.5 rounded-2xl w-fit mt-6"
+        >
+          <Shield className="w-4 h-4 text-white/80" />
+          <span className="text-xs font-medium text-white/85">Bank-grade security & buyer protection</span>
+        </motion.div>
 
-        <div className="mt-10 flex flex-col gap-3 w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.45 }}
+          className="mt-7 flex flex-col gap-3 w-full"
+        >
           <button
             type="button"
             onClick={() => router.push("/auth/phone?flow=signup")}
-            className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-lg py-4 rounded-full transition-all shadow-[0_8px_30px_rgba(16,185,129,0.3)]"
+            className="w-full bg-gradient-to-b from-[#1f1f1f] to-[#080808] text-white font-semibold text-lg py-4 rounded-full border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_12px_24px_rgba(0,0,0,0.3)]"
           >
             Sign Up
           </button>
-        </div>
-        <div className="text-center mt-6">
-          <p className="text-gray-500 text-sm font-medium">
-            Already have an account?{" "}
-            <Link href="/login" className="text-gray-900 font-bold hover:text-emerald-600 transition-colors">
-              Log In
-            </Link>
-          </p>
-        </div>
-      </div>
+          <Link href="/login" className="text-center text-white text-sm underline underline-offset-4">
+            Log In
+          </Link>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
