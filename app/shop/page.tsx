@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Heart, Search } from "lucide-react";
+import { Heart, MapPin, Search } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
 import { LazyImage } from "@/components/lazy-image";
+import { mockDashboardData } from "@/data/mockDashboardData";
 
 type CategoryItem = {
   id: string;
@@ -237,6 +238,35 @@ export default function ShopPage() {
                 </div>
                 <p className="mt-2 text-xs font-medium text-slate-700 leading-tight">{store.name}</p>
               </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-[1.55rem] font-black tracking-tight text-slate-900">Stores Near You</h2>
+            <button type="button" className="rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600">
+              View all
+            </button>
+          </div>
+          <div className="space-y-2.5">
+            {mockDashboardData.nearbyStores.map((store) => (
+              <div key={store.branchId} className="p-3.5 bg-white rounded-2xl border border-slate-200">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-9 h-9 rounded-full bg-[#ECFDF5] text-[#00D084] flex items-center justify-center shrink-0">
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-[#1A1A1A] truncate">{store.name}</p>
+                      <p className="text-xs text-[#9CA3AF]">{store.type}</p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-medium text-[#4B5563] px-2.5 py-1 rounded-full bg-[#F3F4F6]">
+                    {store.distanceKm}km
+                  </span>
+                </div>
+              </div>
             ))}
           </div>
         </section>

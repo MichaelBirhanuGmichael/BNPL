@@ -33,9 +33,9 @@ export default function OrderDetailsPage() {
                 Samsung 55&apos; Smart TV
               </p>
               <p className="mt-1 text-sm text-[#6B7280]">Order #MRQ-284</p>
-              <p className="mt-2 text-lg font-bold text-[#1A1A1A]">45,000 ETB</p>
+              <p className="mt-2 text-lg font-bold text-[#1A1A1A]">45,000 Br</p>
               <p className="text-sm font-semibold text-[#00D084]">
-                1,500 ETB / month for 30 months
+                1,500 Br / month for 30 months
               </p>
             </div>
           </div>
@@ -57,7 +57,7 @@ export default function OrderDetailsPage() {
                 </span>
               }
               title="1st Installment: Paid Apr 22"
-              amount="1,500 ETB"
+              amount="1,500 Br"
               showLine
             />
             <StepperRow
@@ -67,7 +67,7 @@ export default function OrderDetailsPage() {
                 </span>
               }
               title="2nd Installment: Due May 22"
-              amount="1,500 ETB"
+              amount="1,500 Br"
               showLine
             />
             <StepperRow
@@ -77,7 +77,7 @@ export default function OrderDetailsPage() {
                 </span>
               }
               title="3rd Installment: Due Jun 22"
-              amount="1,500 ETB"
+              amount="1,500 Br"
             />
           </div>
         </div>

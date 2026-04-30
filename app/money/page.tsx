@@ -25,7 +25,7 @@ export default function MoneyPage() {
 
   return (
     <div className="min-h-screen max-w-[400px] mx-auto bg-white">
-      <div className="px-6 pt-8 pb-28 space-y-6">
+      <div className="px-4 pt-8 pb-28 space-y-5">
         <header className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-black">Money</h1>
           <button
@@ -41,7 +41,7 @@ export default function MoneyPage() {
         <section className="space-y-4">
           <Link
             href="/money/card"
-            className="block w-full rounded-3xl text-white px-6 py-5"
+            className="block w-full rounded-[2.5rem] text-white px-6 py-6"
             style={{ background: "linear-gradient(135deg, #121212 0%, #2a2a2a 100%)" }}
           >
             <div className="flex items-center justify-between">
@@ -50,13 +50,10 @@ export default function MoneyPage() {
                   <CreditCard className="w-5 h-5 text-black" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium">MEREQ Card</p>
-                  <p className="text-3xl leading-none tracking-wide font-medium mt-1">
+                  <p className="text-3xl leading-none tracking-wide font-semibold">
                     Br {availableLimit.toLocaleString("en-ET")}
                   </p>
-                  <p className="text-[12px] text-[#71717A] mt-1">
-                    Total limit Br {availableLimit.toLocaleString("en-ET")}
-                  </p>
+                  <p className="text-[12px] text-zinc-400 mt-1">Available Limit</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-zinc-300" />
@@ -64,7 +61,7 @@ export default function MoneyPage() {
           </Link>
 
           <div
-            className="w-full rounded-3xl text-white px-6 py-5"
+            className="w-full rounded-[2.5rem] text-white px-6 py-5"
             style={{ background: "linear-gradient(135deg, #121212 0%, #2a2a2a 100%)" }}
           >
             <div className="flex items-center justify-between">
@@ -75,14 +72,14 @@ export default function MoneyPage() {
                 <div>
                   <p className="text-sm font-medium">Cashback</p>
                   <p className="text-3xl leading-none tracking-wide font-medium mt-1">Br 0.00</p>
-                  <p className="text-[12px] text-[#71717A] mt-1">Earn cashback as you spend</p>
+                  <p className="text-[12px] text-zinc-400 mt-1">Earn cashback as you spend</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-zinc-300" />
             </div>
           </div>
 
-          <Link href="/orders" className="block rounded-3xl bg-[#F9FAFB] border border-[#E5E7EB] text-black px-6 py-5">
+          <Link href="/orders" className="block rounded-[2.5rem] bg-[#F9FAFB] border border-[#E5E7EB] text-black px-6 py-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white border border-[#E5E7EB] flex items-center justify-center">
@@ -115,7 +112,7 @@ export default function MoneyPage() {
           </Link>
         </section>
 
-        <section className="rounded-3xl bg-[#F9FAFB] border border-[#E5E7EB] p-5">
+        <section className="rounded-[2.5rem] bg-[#F9FAFB] border border-[#E5E7EB] p-5">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-2xl font-bold text-black">History</h2>
             <button className="px-3 py-1 text-sm rounded-full bg-white text-[#71717A]">View all</button>
@@ -141,11 +138,8 @@ export default function MoneyPage() {
           </div>
         </section>
 
-        <section className="rounded-3xl bg-[#F9FAFB] border border-[#E5E7EB] p-5">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-2xl font-bold text-black">Help centre</h2>
-            <button className="px-3 py-1 text-sm rounded-full bg-white text-[#71717A]">View all</button>
-          </div>
+        <section className="rounded-[2.5rem] bg-[#F9FAFB] border border-[#E5E7EB] p-5">
+          <h2 className="text-2xl font-bold text-black mb-3">Help centre</h2>
           <div className="divide-y divide-zinc-200">
             {helpItems.map((item) => (
               <button key={item} className="w-full py-3 flex items-center justify-between text-left">
@@ -155,10 +149,6 @@ export default function MoneyPage() {
             ))}
           </div>
         </section>
-
-        <Link href="/money/limits" className="block text-center text-sm text-[#71717A] underline underline-offset-4">
-          Need more? Boost in-store limits
-        </Link>
       </div>
 
       <AppBottomNav active="money" />

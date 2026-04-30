@@ -8,7 +8,7 @@ export const mockDashboardData = {
   prosumerUpsell: {
     show: true,
     title: "Own a business? 🚀",
-    subtitle: "Upload your TIN to skip the wait and unlock up to 3,000 ETB instantly.",
+    subtitle: "Upload your TIN to skip the wait and unlock up to 3,000 Br instantly.",
     ctaText: "Verify Business"
   },
   featuredDeals: [

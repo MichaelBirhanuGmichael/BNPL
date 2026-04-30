@@ -187,7 +187,7 @@ export default function PreApprovalPage() {
                       style={{ color: "#1A1A1A" }}
                       placeholder="0"
                     />
-                    <span className="text-2xl text-gray-400 font-medium">ETB</span>
+                    <span className="text-2xl text-gray-400 font-medium">Br</span>
                   </div>
                 </div>
               </motion.div>
@@ -218,7 +218,7 @@ export default function PreApprovalPage() {
                     </svg>
                   </div>
                   <p className="text-sm leading-relaxed" style={{ color: "#92400E" }}>
-                    This merchant offers <span className="font-semibold">0% interest</span> for the first 30 days on purchases under 10,000 ETB.
+                    This merchant offers <span className="font-semibold">0% interest</span> for the first 30 days on purchases under 10,000 Br.
                   </p>
                 </div>
               </motion.div>
@@ -354,7 +354,7 @@ export default function PreApprovalPage() {
               className="text-lg font-semibold mb-2"
               style={{ color: "#1A1A1A" }}
             >
-              Approved for {amount} ETB
+              Approved for {amount} Br
             </motion.p>
 
             <motion.p

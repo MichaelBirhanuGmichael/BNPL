@@ -250,7 +250,7 @@ export default function CheckoutPage() {
                 className="text-center mb-8"
               >
                 <p className="text-sm text-gray-500 mb-1">Total Amount</p>
-                <p className="text-5xl font-bold" style={{ color: "#1A1A1A" }}>400 ETB</p>
+                <p className="text-5xl font-bold" style={{ color: "#1A1A1A" }}>400 Br</p>
               </motion.div>
 
               {/* Payment Options Toggle */}
@@ -294,7 +294,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-gray-500">via Telebirr</p>
                         </div>
                       </div>
-                      <span className="font-bold" style={{ color: "#1A1A1A" }}>400 ETB</span>
+                      <span className="font-bold" style={{ color: "#1A1A1A" }}>400 Br</span>
                     </div>
                   </button>
 
@@ -314,7 +314,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-gray-400">Unlock with credit history</p>
                         </div>
                       </div>
-                      <span className="font-bold text-gray-400">133 ETB/mo</span>
+                      <span className="font-bold text-gray-400">133 Br/mo</span>
                     </div>
                   </button>
                 </div>

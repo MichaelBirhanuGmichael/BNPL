@@ -53,7 +53,7 @@ export default function OrdersPage() {
                 <p className="text-base font-semibold text-[#1A1A1A]">
                   Samsung 55&apos; Smart TV
                 </p>
-                <p className="mt-1 text-sm font-medium text-[#4B5563]">45,000 ETB</p>
+                <p className="mt-1 text-sm font-medium text-[#4B5563]">45,000 Br</p>
                 <span className="mt-3 inline-flex rounded-full bg-[#E8F9F1] px-3 py-1 text-xs font-semibold text-[#0F8A55]">
                   Next payment in 12 days
                 </span>
@@ -71,7 +71,7 @@ export default function OrdersPage() {
               />
               <div className="flex-1">
                 <p className="text-base font-semibold text-[#1A1A1A]">Nike Air Max</p>
-                <p className="mt-1 text-sm font-medium text-[#4B5563]">8,500 ETB</p>
+                <p className="mt-1 text-sm font-medium text-[#4B5563]">8,500 Br</p>
                 <span className="mt-3 inline-flex rounded-full bg-[#F3F4F6] px-3 py-1 text-xs font-semibold text-[#6B7280]">
                   Paid off
                 </span>

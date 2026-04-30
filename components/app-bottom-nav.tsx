@@ -9,11 +9,13 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type NavView = "discover" | "shop" | "money" | "profile";
 
 export function AppBottomNav({ active }: { active: NavView }) {
   const router = useRouter();
+  const [discoverPulse, setDiscoverPulse] = useState(0);
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 w-full pointer-events-none">
@@ -24,7 +26,11 @@ export function AppBottomNav({ active }: { active: NavView }) {
             icon={<Compass className="h-[22px] w-[22px] stroke-[1.8]" />}
             label="Discover"
             active={active === "discover"}
-            onClick={() => router.push("/discover")}
+            pulse={active === "discover" ? discoverPulse : 0}
+            onClick={() => {
+              setDiscoverPulse((v) => v + 1);
+              router.push("/discover");
+            }}
           />
           <BottomItem
             icon={<Search className="h-[22px] w-[22px] stroke-[1.8]" />}
@@ -67,18 +73,20 @@ function BottomItem({
   icon,
   label,
   active,
+  pulse,
   onClick,
 }: {
   icon: ReactNode;
   label: string;
   active: boolean;
+  pulse?: number;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex flex-col items-center gap-0.5"
+      className={`flex flex-col items-center gap-0.5 ${active && label === "Discover" && pulse ? "animate-pulse" : ""}`}
       style={{ color: active ? "#000000" : "#9CA3AF" }}
     >
       {icon}
