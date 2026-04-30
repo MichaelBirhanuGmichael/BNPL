@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, CreditCard, Eye, EyeOff, ShieldCheck, Smartphone, Sparkles } from "lucide-react";
 
@@ -11,12 +11,12 @@ type MereqOverlayCheckoutProps = {
   totalPrice: number;
   onClose: () => void;
   initialPlan?: "split" | "full";
-  initialStep?: "choose" | "review" | "reveal" | "success";
+  initialStep?: "choose" | "generating" | "reveal" | "success";
   onPlanConfirmed: (plan: "split" | "full") => void;
 };
 
 type PaymentMethod = "saved-card" | "telebirr";
-type OverlayStage = "choose" | "review" | "generating" | "reveal" | "success";
+type OverlayStage = "choose" | "generating" | "reveal" | "success";
 type PaymentPlan = "split" | "full";
 
 function addMonths(base: Date, offset: number) {
@@ -40,6 +40,16 @@ export function MereqOverlayCheckout({
   const [stage, setStage] = useState<OverlayStage>(initialStep);
   const [showCardNumber, setShowCardNumber] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showCopiedToast, setShowCopiedToast] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    setPlan(initialPlan);
+    setStage(initialStep);
+    setShowCardNumber(false);
+    setCopied(false);
+    setShowCopiedToast(false);
+  }, [open, initialPlan, initialStep]);
 
   const installments = useMemo(() => {
     const each = totalPrice / 4;
@@ -65,27 +75,18 @@ export function MereqOverlayCheckout({
   const maskedNumber = "•••• •••• •••• 1508";
   const firstPayment = installments[0]?.amount ?? totalPrice / 4;
 
-  const confirmPayment = () => {
-    if (stage !== "review") return;
-    if (plan === "split") {
-      setStage("generating");
-      window.setTimeout(() => {
-        setStage("reveal");
-        onPlanConfirmed("split");
-      }, 1600);
-      return;
-    }
-    onPlanConfirmed("full");
-    setStage("success");
-  };
-
   const copyCardNumber = async () => {
     try {
       await navigator.clipboard.writeText(cardData.number.replace(/\s/g, ""));
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1200);
+      setShowCopiedToast(true);
+      window.setTimeout(() => {
+        setCopied(false);
+        setShowCopiedToast(false);
+      }, 1400);
     } catch {
       setCopied(false);
+      setShowCopiedToast(false);
     }
   };
 
@@ -101,6 +102,7 @@ export function MereqOverlayCheckout({
             onClick={onClose}
           />
           <motion.div
+            layoutId="mereq-checkout-sheet"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -110,9 +112,10 @@ export function MereqOverlayCheckout({
           >
             {stage === "choose" ? (
               <>
-                <h3 className="text-[24px] font-semibold tracking-tight text-zinc-900">Choose payment method</h3>
+                <motion.h3 layoutId="mereq-checkout-title" className="text-[24px] font-semibold tracking-tight text-zinc-900">
+                  Choose payment method
+                </motion.h3>
                 <p className="text-sm text-zinc-500 mt-1">Select the way you want to complete this order.</p>
-
                 <div className="mt-5 space-y-3">
                   <button
                     type="button"
@@ -122,16 +125,15 @@ export function MereqOverlayCheckout({
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#31f5c233] text-[#0f8d70] flex items-center justify-center">
+                      <motion.div layoutId="mereq-plan-split-icon" className="w-8 h-8 rounded-full bg-[#31f5c233] text-[#0f8d70] flex items-center justify-center">
                         <Sparkles className="w-4 h-4" />
-                      </div>
+                      </motion.div>
                       <div>
-                        <p className="text-sm font-semibold text-zinc-900">Pay in 4</p>
-                        <p className="text-xs text-zinc-500">Interest-free, split over 3 months</p>
+                        <p className="text-sm font-semibold text-zinc-900">Pay by MEREQ</p>
+                        <p className="text-xs text-zinc-500">Split automatically into 4 monthly installments</p>
                       </div>
                     </div>
                   </button>
-
                   <button
                     type="button"
                     onClick={() => setPlan("full")}
@@ -140,9 +142,9 @@ export function MereqOverlayCheckout({
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#2BA7FF22] text-[#2BA7FF] flex items-center justify-center">
+                      <motion.div layoutId="mereq-plan-full-icon" className="w-8 h-8 rounded-full bg-[#2BA7FF22] text-[#2BA7FF] flex items-center justify-center">
                         <CreditCard className="w-4 h-4" />
-                      </div>
+                      </motion.div>
                       <div>
                         <p className="text-sm font-semibold text-zinc-900">Pay in Full</p>
                         <p className="text-xs text-zinc-500">0% interest, pay the full amount today</p>
@@ -150,113 +152,42 @@ export function MereqOverlayCheckout({
                     </div>
                   </button>
                 </div>
-
+                {plan === "full" && (
+                  <div className="mt-3 rounded-2xl border border-[#31f5c244] bg-[#31f5c214] px-3 py-2 text-xs text-zinc-700">
+                    ✨ Unlocks higher limits. Paying in full now gets you Br 200 closer to your Br 1,500 limit boost.
+                  </div>
+                )}
                 <button
                   type="button"
-                  onClick={() => setStage("review")}
+                  onClick={() => {
+                    if (plan === "split") {
+                      setStage("generating");
+                      window.setTimeout(() => setStage("reveal"), 1300);
+                      return;
+                    }
+                    setStage("success");
+                  }}
                   className="mt-5 w-full h-12 rounded-full bg-black text-white font-semibold"
                 >
                   Continue
                 </button>
               </>
-            ) : stage === "review" ? (
-              <>
-                <h3 className="text-[24px] font-semibold tracking-tight text-zinc-900">Review & Confirm</h3>
-                <p className="text-sm text-zinc-500 mt-1">
-                  {plan === "split"
-                    ? "We’ll create a temporary card for this purchase. You pay us in 4, and we pay the merchant in full."
-                    : `You are paying ${merchantName} in full today via your linked payment method.`}
-                </p>
-                <p className="text-xs text-zinc-500 mt-2">
-                  {plan === "split"
-                    ? `Br ${firstPayment.toFixed(2)} will be charged to your ${method === "saved-card" ? "Linked Visa" : "Telebirr"} today.`
-                    : `Br ${totalPrice.toFixed(2)} will be charged to your ${method === "saved-card" ? "Visa" : "Telebirr"} today.`}
-                </p>
-
-                {plan === "split" && (
-                  <div className="mt-5 rounded-[2rem] bg-[#F8F9FB] p-4 space-y-3">
-                    {installments.map((item, index) => (
-                      <div key={`${item.label}-${index}`} className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-zinc-900">{item.label}</p>
-                          <p className="text-xs text-zinc-500">
-                            {item.date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
-                          </p>
-                        </div>
-                        <p className="text-sm font-semibold text-zinc-900">Br {item.amount.toFixed(2)}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <p className="mt-5 text-xs tracking-wide uppercase text-zinc-500">Payment method</p>
-                <div className="mt-2 space-y-2">
-                  <button
-                    type="button"
-                    onClick={() => setMethod("saved-card")}
-                    className={`w-full rounded-2xl border p-4 flex items-center justify-between ${
-                      method === "saved-card" ? "border-[#31f5c2] bg-[#31f5c214]" : "border-zinc-200"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <CreditCard className="w-5 h-5 text-zinc-700" />
-                      <div className="text-left">
-                        <p className="text-sm font-semibold text-zinc-900">Visa / Mastercard</p>
-                        <p className="text-xs text-zinc-500">Visa ending in · 4242</p>
-                      </div>
-                    </div>
-                    <span className="text-xs text-zinc-500 underline underline-offset-2">Change card</span>
-                    {method === "saved-card" && <Check className="w-4 h-4 text-[#0f8d70]" />}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setMethod("telebirr")}
-                    className={`w-full rounded-2xl border p-4 flex items-center justify-between ${
-                      method === "telebirr" ? "border-[#31f5c2] bg-[#31f5c214]" : "border-zinc-200"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[#2BA7FF]/20 text-[#2BA7FF] flex items-center justify-center text-[11px] font-bold">
-                        T
-                      </div>
-                      <div className="text-left">
-                        <p className="text-sm font-semibold text-zinc-900">Telebirr / Mobile Money</p>
-                        <p className="text-xs text-zinc-500">Secure mobile authorization</p>
-                      </div>
-                    </div>
-                    {method === "telebirr" ? <Check className="w-4 h-4 text-[#0f8d70]" /> : <Smartphone className="w-4 h-4 text-zinc-400" />}
-                  </button>
-                </div>
-                <p className="mt-2 text-xs text-zinc-500">Virtual Card is only required for In-Store purchases.</p>
-
-                <button
-                  type="button"
-                  onClick={confirmPayment}
-                  className="mt-5 w-full h-12 rounded-full bg-black text-white font-semibold"
-                >
-                  Confirm Payment
-                </button>
-              </>
             ) : stage === "generating" ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="min-h-[320px] flex flex-col items-center justify-center text-center"
-              >
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-[320px] flex flex-col items-center justify-center text-center">
                 <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
-                  className="w-9 h-9 border-2 border-zinc-200 border-t-[#31f5c2] rounded-full"
-                />
-                <p className="mt-4 text-base font-semibold tracking-tight text-zinc-900">Generating your secure card...</p>
+                  layoutId="mereq-plan-split-icon"
+                  animate={{ scale: [1, 1.12, 1] }}
+                  transition={{ duration: 1.2, repeat: Infinity }}
+                  className="w-16 h-16 rounded-full bg-[#31f5c229] flex items-center justify-center"
+                >
+                  <ShieldCheck className="w-8 h-8 text-[#0f8d70]" />
+                </motion.div>
+                <p className="mt-4 text-base font-semibold tracking-tight text-zinc-900">
+                  Securing your One-time Card for {merchantName}...
+                </p>
               </motion.div>
             ) : stage === "reveal" ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="min-h-[280px]"
-              >
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-[280px]">
                 <p className="text-lg font-semibold tracking-tight text-zinc-900">Your one-time card is ready</p>
                 <p className="text-xs text-zinc-500 mt-1">Use these details at {merchantName} checkout.</p>
                 <motion.div
@@ -267,11 +198,15 @@ export function MereqOverlayCheckout({
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs tracking-[0.2em] font-semibold">MEREQ</span>
-                    <ShieldCheck className="w-4 h-4 text-[#31f5c2]" />
+                    <motion.div layoutId="mereq-plan-split-icon">
+                      <ShieldCheck className="w-4 h-4 text-[#31f5c2]" />
+                    </motion.div>
                   </div>
-                  <p className="mt-6 font-mono text-lg tracking-[0.15em]">
+                  <button type="button" onClick={copyCardNumber} className="mt-6 font-mono text-lg tracking-[0.15em] text-left">
                     {showCardNumber ? cardData.number : maskedNumber}
-                  </p>
+                  </button>
+                  <p className="text-[10px] text-white/70 mt-1">Tap card number to copy</p>
+                  <p className="text-[10px] text-white/70">{cardData.holder}</p>
                   <div className="mt-4 flex items-center justify-between text-[11px] font-mono">
                     <span>EXP {cardData.expiry}</span>
                     <span>CVV {showCardNumber ? cardData.cvv : "•••"}</span>
@@ -295,7 +230,6 @@ export function MereqOverlayCheckout({
                     {copied ? "Copied!" : "Copy Card Number"}
                   </button>
                 </div>
-
                 <div className="mt-5 w-full rounded-2xl border border-zinc-100 p-4 space-y-3">
                   <div className="flex items-center gap-2 text-sm text-zinc-700">
                     <Copy className="w-4 h-4 text-[#0f8d70]" />
@@ -310,25 +244,32 @@ export function MereqOverlayCheckout({
                     <span><strong>Relax:</strong> We&apos;ll handle the rest in 4 easy installments.</span>
                   </div>
                 </div>
-
                 <p className="mt-4 text-xs text-zinc-500">
                   First payment of Br {firstPayment.toFixed(2)} will be charged to your{" "}
                   {method === "saved-card" ? "Linked Visa" : "Telebirr"} today.
                 </p>
                 <button
                   type="button"
-                  onClick={onClose}
+                  onClick={() => {
+                    onPlanConfirmed("split");
+                    onClose();
+                  }}
                   className="mt-5 w-full h-11 rounded-full bg-black text-white text-sm font-semibold"
                 >
                   Done
                 </button>
+                {showCopiedToast && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="fixed left-1/2 -translate-x-1/2 bottom-6 z-[90] px-3 py-2 rounded-full bg-[#31f5c2] text-black text-xs font-semibold"
+                  >
+                    Copied to clipboard
+                  </motion.div>
+                )}
               </motion.div>
             ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="min-h-[260px] flex flex-col items-center justify-center text-center"
-              >
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-[260px] flex flex-col items-center justify-center text-center">
                 <motion.div
                   initial={{ scale: 0.7, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -341,7 +282,10 @@ export function MereqOverlayCheckout({
                 </p>
                 <button
                   type="button"
-                  onClick={onClose}
+                  onClick={() => {
+                    onPlanConfirmed("full");
+                    onClose();
+                  }}
                   className="mt-5 px-4 py-2 rounded-full bg-black text-white text-sm font-semibold"
                 >
                   Continue

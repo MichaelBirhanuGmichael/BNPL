@@ -17,6 +17,7 @@ function StoreWebviewContent() {
   const hasNativeApp = searchParams.get("app") === "1";
   const productName = searchParams.get("product") ?? "Selected item";
   const productPrice = Number(searchParams.get("price") ?? "1000");
+  const productUrl = searchParams.get("productUrl") ?? merchantUrl;
 
   return (
     <MerchBrowser
@@ -26,6 +27,7 @@ function StoreWebviewContent() {
       merchantLogo={merchantLogo}
       productName={productName}
       productPrice={Number.isFinite(productPrice) ? productPrice : 1000}
+      productUrl={productUrl}
       hasNativeApp={hasNativeApp}
       onClose={() => router.push("/shop")}
     />

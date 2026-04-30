@@ -7,6 +7,7 @@ import { Briefcase, ChevronLeft, ChevronRight, Heart, MapPin, Search, ShieldChec
 import { AppBottomNav } from "@/components/app-bottom-nav"
 import { mockDashboardData } from "@/data/mockDashboardData"
 import { LazyImage } from "@/components/lazy-image"
+import { useCreditBuilderProgress } from "@/lib/credit-builder-state"
 
 const featuredStores = [
   { id: "s1", name: "Amazon", logo: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=200" },
@@ -36,19 +37,20 @@ const discoverProducts = [
 
 export default function DashboardPage() {
   const router = useRouter()
+  const creditBuilderProgress = useCreditBuilderProgress()
   const [activeDealIndex, setActiveDealIndex] = useState(0)
   const [searchQuery, setSearchQuery] = useState("")
   const baseCardClass =
     "rounded-2xl border border-gray-100 shadow-sm transition-all duration-200 ease-out hover:-translate-y-[1px] hover:shadow-md active:translate-y-0 active:scale-[0.995]"
   const sectionTitleClass = "text-[#000000] text-lg font-semibold mb-3"
   const transactionProgress =
-    (mockDashboardData.creditBuilder.transactions.current / mockDashboardData.creditBuilder.transactions.required) * 100
+    (creditBuilderProgress.transactionsCurrent / mockDashboardData.creditBuilder.transactions.required) * 100
   const remainingTransactions = Math.max(
-    mockDashboardData.creditBuilder.transactions.required - mockDashboardData.creditBuilder.transactions.current,
+    mockDashboardData.creditBuilder.transactions.required - creditBuilderProgress.transactionsCurrent,
     0
   )
   const remainingVolumeEtb = Math.max(
-    mockDashboardData.creditBuilder.volumeEtb.required - mockDashboardData.creditBuilder.volumeEtb.current,
+    mockDashboardData.creditBuilder.volumeEtb.required - creditBuilderProgress.volumeCurrent,
     0
   )
   const featuredDeals = mockDashboardData.featuredDeals
@@ -173,10 +175,10 @@ export default function DashboardPage() {
             <div className="mb-3">
               <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
                 <span>
-                  {mockDashboardData.creditBuilder.transactions.current} / {mockDashboardData.creditBuilder.transactions.required} Transactions
+                  {creditBuilderProgress.transactionsCurrent} / {mockDashboardData.creditBuilder.transactions.required} Transactions
                 </span>
                 <span>
-                  {mockDashboardData.creditBuilder.volumeEtb.current.toLocaleString()} /{" "}
+                  {creditBuilderProgress.volumeCurrent.toLocaleString()} /{" "}
                   {mockDashboardData.creditBuilder.volumeEtb.required.toLocaleString()} ETB
                 </span>
               </div>

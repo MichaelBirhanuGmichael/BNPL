@@ -76,6 +76,7 @@ export default function StoreHandoffPage() {
   const params = useParams<{ id: string }>();
   const [productName, setProductName] = useState("Selected item");
   const [productPrice, setProductPrice] = useState("1000");
+  const [productUrl, setProductUrl] = useState("https://www.amazon.com");
   const merchant = merchants[params.id] ?? {
     name: "Partner Store",
     logo: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=120&h=120&fit=crop",
@@ -87,8 +88,10 @@ export default function StoreHandoffPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const nextProduct = urlParams.get("product");
     const nextPrice = urlParams.get("price");
+    const nextProductUrl = urlParams.get("productUrl");
     if (nextProduct) setProductName(nextProduct);
     if (nextPrice) setProductPrice(nextPrice);
+    if (nextProductUrl) setProductUrl(nextProductUrl);
   }, []);
 
   useEffect(() => {
@@ -98,11 +101,11 @@ export default function StoreHandoffPage() {
           merchant.url
         )}&logo=${encodeURIComponent(merchant.logo)}&app=${merchant.hasApp ? "1" : "0"}&product=${encodeURIComponent(
           productName
-        )}&price=${encodeURIComponent(productPrice)}`
+        )}&price=${encodeURIComponent(productPrice)}&productUrl=${encodeURIComponent(productUrl)}`
       );
     }, 1500);
     return () => window.clearTimeout(timer);
-  }, [router, params.id, merchant.name, merchant.url, merchant.logo, merchant.hasApp, productName, productPrice]);
+  }, [router, params.id, merchant.name, merchant.url, merchant.logo, merchant.hasApp, productName, productPrice, productUrl]);
 
   return (
     <div className="min-h-screen max-w-[400px] mx-auto bg-radial-[at_50%_20%] from-[#ffffff] to-[#f9fafb] flex items-center justify-center px-6">

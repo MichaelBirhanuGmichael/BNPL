@@ -24,6 +24,7 @@ const mockProducts = [
     image:
       "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=1000&q=80",
     description: "Premium Android flagship with high refresh display and pro-grade camera setup.",
+    productUrl: "https://www.amazon.com/s?k=Samsung+Galaxy+S24+Ultra",
   },
   {
     id: "2",
@@ -40,6 +41,7 @@ const mockProducts = [
     image:
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80",
     description: "Classic sneaker silhouette with durable leather upper and everyday comfort.",
+    productUrl: "https://www.nike.com/t/air-force-1-07-shoes",
   },
   {
     id: "3",
@@ -56,6 +58,7 @@ const mockProducts = [
     image:
       "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=80",
     description: "Modern sectional sofa with premium fabric, built for spacious living rooms.",
+    productUrl: "https://www.zemenhome.com/products/sofa-set",
   },
   {
     id: "4",
@@ -72,6 +75,7 @@ const mockProducts = [
     image:
       "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=1000&q=80",
     description: "Apple silicon performance laptop with pro display and all-day battery.",
+    productUrl: "https://www.apple.com/shop/buy-mac/macbook-pro",
   },
   {
     id: "5",
@@ -88,6 +92,7 @@ const mockProducts = [
     image:
       "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?auto=format&fit=crop&w=1000&q=80",
     description: "Tailored wool-blend blazer designed for modern formal styling.",
+    productUrl: "https://www.zara.com/ww/en/wool-blend-blazer-p00000000.html",
   },
   {
     id: "6",
@@ -104,6 +109,7 @@ const mockProducts = [
     image:
       "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=1000&q=80",
     description: "Titanium iPhone with pro camera system, strong performance and long battery life.",
+    productUrl: "https://www.apple.com/shop/buy-iphone/iphone-15-pro",
   },
 ];
 
@@ -370,6 +376,7 @@ export default function ProductDetailPage() {
           onClick={() =>
             router.push(
               `/store-handoff/${merchantHandoffId}?product=${encodeURIComponent(product.name)}&price=${product.price}`
+              + `&productUrl=${encodeURIComponent(product.productUrl)}`
             )
           }
           className="w-full py-5 rounded-2xl tracking-tight font-medium text-white text-base bg-black shadow-[0_8px_24px_rgba(0,0,0,0.22)] active:scale-[0.98] transition-transform"
