@@ -10,35 +10,53 @@ const merchants: Record<string, { name: string; logo: string; url: string; hasAp
   samsung: {
     name: "Samsung",
     logo: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=120&h=120&fit=crop",
-    url: "samsung.com",
+    url: "https://www.samsung.com",
     hasApp: true,
   },
   amazon: {
     name: "Amazon",
     logo: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=120&h=120&fit=crop",
-    url: "amazon.com",
+    url: "https://www.amazon.com",
+    hasApp: true,
+  },
+  nike: {
+    name: "Nike",
+    logo: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=120&h=120&fit=crop",
+    url: "https://www.nike.com",
+    hasApp: true,
+  },
+  apple: {
+    name: "Apple",
+    logo: "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=120&h=120&fit=crop",
+    url: "https://www.apple.com",
+    hasApp: true,
+  },
+  zara: {
+    name: "Zara",
+    logo: "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?w=120&h=120&fit=crop",
+    url: "https://www.zara.com",
     hasApp: true,
   },
   carrefour: {
     name: "Carrefour",
     logo: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=120&h=120&fit=crop",
-    url: "carrefour.com",
+    url: "https://www.carrefour.com",
     hasApp: true,
   },
   "zemen-home": {
     name: "Zemen Home",
     logo: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=120&h=120&fit=crop",
-    url: "zemenhome.com",
+    url: "https://www.zemenhome.com",
   },
   "shoa-supermarket": {
     name: "Shoa Supermarket",
     logo: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=120&h=120&fit=crop",
-    url: "shoasupermarket.com",
+    url: "https://www.shoasupermarket.com",
   },
   m1: {
     name: "Level Shoes",
     logo: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=120&h=120&fit=crop",
-    url: "levelshoes.com",
+    url: "https://www.levelshoes.com",
     hasApp: true,
   },
   m5: {
@@ -49,7 +67,7 @@ const merchants: Record<string, { name: string; logo: string; url: string; hasAp
   m6: {
     name: "IKEA",
     logo: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=120&h=120&fit=crop",
-    url: "ikea.com",
+    url: "https://www.ikea.com",
   },
 };
 
