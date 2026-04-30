@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { ChevronRight, LogOut } from "lucide-react";
+import { BadgeCheck, ChevronRight, LogOut } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
 import { mockDashboardData } from "@/data/mockDashboardData";
 import { useCreditBuilderProgress } from "@/lib/credit-builder-state";
@@ -35,7 +35,10 @@ export default function ProfilePage() {
             </div>
             <div>
               <p className="text-lg font-semibold text-[#1A1A1A]">Abebe Kebede</p>
-              <p className="text-sm text-[#6B7280]">MEREQ Member</p>
+              <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[#E8F9F1] px-2.5 py-1 text-xs font-semibold text-[#0E7A4E]">
+                <BadgeCheck className="h-3.5 w-3.5" />
+                Fayda Verified Member
+              </div>
             </div>
           </div>
 
