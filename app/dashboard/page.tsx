@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { Briefcase, ChevronLeft, ChevronRight, Heart, MapPin, Search, ShieldCheck } from "lucide-react"
 import { AppBottomNav } from "@/components/app-bottom-nav"
 import { mockDashboardData } from "@/data/mockDashboardData"
+import { LazyImage } from "@/components/lazy-image"
 
 const featuredStores = [
   { id: "s1", name: "Amazon", logo: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=200" },
@@ -101,7 +102,12 @@ export default function DashboardPage() {
               {featuredStores.map((store) => (
                 <article key={store.id} className="shrink-0 text-center w-16">
                   <div className="relative mx-auto w-14 h-14">
-                    <img src={store.logo} alt={store.name} className="w-14 h-14 rounded-full bg-slate-100 object-cover border border-slate-200" />
+                    <LazyImage
+                      src={store.logo}
+                      alt={store.name}
+                      wrapperClassName="w-14 h-14 rounded-full bg-slate-100 border border-slate-200"
+                      className="w-full h-full object-cover"
+                    />
                     <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-white" />
                   </div>
                   <p className="mt-2 text-xs font-medium text-slate-700 leading-tight">{store.name}</p>
@@ -291,7 +297,12 @@ export default function DashboardPage() {
                     >
                       <Heart className="w-3.5 h-3.5" />
                     </button>
-                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                    <LazyImage
+                      src={product.image}
+                      alt={product.name}
+                      wrapperClassName="w-full h-full"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div className="p-2.5">
                     <h4 className="text-sm font-semibold text-black line-clamp-2 leading-tight">{product.name}</h4>

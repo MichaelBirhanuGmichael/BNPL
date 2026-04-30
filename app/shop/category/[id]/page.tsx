@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Info, Search } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { LazyImage } from "@/components/lazy-image";
 
 const categoryData: Record<
   string,
@@ -86,7 +87,12 @@ export default function ShopCategoryPage() {
               <div className="space-y-3">
                 {category.stores.map((store) => (
                   <article key={store.id} className="rounded-[24px] bg-[#F3F4F6] p-3 flex items-center gap-3">
-                    <img src={store.logo} alt={store.name} className="w-16 h-16 rounded-2xl object-cover" />
+                    <LazyImage
+                      src={store.logo}
+                      alt={store.name}
+                      wrapperClassName="w-16 h-16 rounded-2xl"
+                      className="w-full h-full object-cover"
+                    />
                     <div>
                       <p className="font-bold text-slate-900">{store.name}</p>
                       <p className="text-sm text-slate-600">{store.discount}</p>

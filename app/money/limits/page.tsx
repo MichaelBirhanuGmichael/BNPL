@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Search } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { LazyImage } from "@/components/lazy-image";
 
 const merchants = [
   {
@@ -104,19 +105,24 @@ export default function MoneyLimitsPage() {
           </div>
         </div>
 
-        <div className="mt-2 divide-y divide-zinc-200">
+        <div className="mt-2 divide-y divide-zinc-50">
           {filtered.map((merchant) => (
-            <div key={merchant.id} className="py-3 flex items-center justify-between">
+            <div key={merchant.id} className="py-5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <img src={merchant.logo} alt={merchant.name} className="w-9 h-9 rounded-full object-cover border border-zinc-200" />
+                <LazyImage
+                  src={merchant.logo}
+                  alt={merchant.name}
+                  wrapperClassName="w-9 h-9 rounded-full border border-zinc-200"
+                  className="w-full h-full object-cover"
+                />
                 <div>
-                  <p className="text-sm font-medium text-black">{merchant.name}</p>
-                  <p className="text-[10px] uppercase tracking-wide text-[#71717A]">{merchant.subtext}</p>
+                  <p className="text-sm font-medium tracking-tight text-black">{merchant.name}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">{merchant.subtext}</p>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedMerchant(merchant)}
-                className="px-4 py-2 rounded-xl bg-white border border-[#E5E7EB] text-sm font-medium text-[#31f5c2]"
+                className="px-4 py-2 rounded-full bg-[#F3F4F6] border border-[#E5E7EB] text-sm font-semibold text-[#18181B] transition-colors active:bg-gray-200 hover:bg-gray-200"
               >
                 Get limit
               </button>

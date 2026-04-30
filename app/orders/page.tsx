@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { LazyImage } from "@/components/lazy-image";
 
 export default function OrdersPage() {
   const [tab, setTab] = useState<"ACTIVE" | "PAID_OFF">("ACTIVE");
@@ -42,10 +43,11 @@ export default function OrdersPage() {
             className="block rounded-3xl border border-[#ECEFF1] p-4 text-left shadow-[0_12px_28px_rgba(26,26,26,0.06)]"
           >
             <div className="flex items-start gap-4">
-              <img
+              <LazyImage
                 src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=800&q=80"
                 alt="Samsung TV"
-                className="h-20 w-20 rounded-xl object-cover"
+                wrapperClassName="h-20 w-20 rounded-xl"
+                className="h-full w-full object-cover"
               />
               <div className="flex-1">
                 <p className="text-base font-semibold text-[#1A1A1A]">
@@ -61,10 +63,11 @@ export default function OrdersPage() {
 
           <div className="rounded-3xl border border-[#ECEFF1] p-4 shadow-[0_12px_28px_rgba(26,26,26,0.04)]">
             <div className="flex items-start gap-4">
-              <img
+              <LazyImage
                 src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80"
                 alt="Nike shoes"
-                className="h-20 w-20 rounded-xl object-cover"
+                wrapperClassName="h-20 w-20 rounded-xl"
+                className="h-full w-full object-cover"
               />
               <div className="flex-1">
                 <p className="text-base font-semibold text-[#1A1A1A]">Nike Air Max</p>

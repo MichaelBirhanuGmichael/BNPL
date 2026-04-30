@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Heart, Search } from "lucide-react";
 import { AppBottomNav } from "@/components/app-bottom-nav";
+import { LazyImage } from "@/components/lazy-image";
 
 type CategoryItem = {
   id: string;
@@ -165,7 +166,12 @@ export default function ShopPage() {
                 className="rounded-[20px] bg-[#F3F4F6] p-3 min-h-[132px] text-left"
               >
                 <div className="flex justify-center">
-                  <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded-2xl shadow-sm" />
+                  <LazyImage
+                    src={item.image}
+                    alt={item.title}
+                    wrapperClassName="w-16 h-16 rounded-2xl shadow-sm"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <p className="mt-3 text-[15px] font-bold text-slate-900 leading-tight">{item.title}</p>
               </button>
@@ -197,7 +203,12 @@ export default function ShopPage() {
                 className="rounded-[20px] bg-[#F3F4F6] p-3 min-h-[132px] text-left"
               >
                 <div className="flex justify-center">
-                  <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded-2xl shadow-sm" />
+                  <LazyImage
+                    src={item.image}
+                    alt={item.title}
+                    wrapperClassName="w-16 h-16 rounded-2xl shadow-sm"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <p className="mt-3 text-[15px] font-bold text-slate-900 leading-tight">{item.title}</p>
               </button>
@@ -216,10 +227,11 @@ export default function ShopPage() {
             {featuredStores.map((store) => (
               <article key={store.id} className="shrink-0 text-center w-16">
                 <div className="relative mx-auto w-14 h-14">
-                  <img
+                  <LazyImage
                     src={store.logo}
                     alt={store.name}
-                    className="w-14 h-14 rounded-full bg-slate-100 object-cover border border-slate-200"
+                    wrapperClassName="w-14 h-14 rounded-full bg-slate-100 border border-slate-200"
+                    className="w-full h-full object-cover"
                   />
                   <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-white" />
                 </div>
@@ -253,7 +265,12 @@ export default function ShopPage() {
                 >
                   <Heart className="w-3.5 h-3.5" />
                 </button>
-                <img src={product.image} alt={product.name} className="h-full w-full object-cover" loading="lazy" />
+                <LazyImage
+                  src={product.image}
+                  alt={product.name}
+                  wrapperClassName="h-full w-full"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <div className="p-2.5">
                 <h3 className="text-sm font-semibold text-black line-clamp-2 leading-tight">{product.name}</h3>

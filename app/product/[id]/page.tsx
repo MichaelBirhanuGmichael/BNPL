@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Info, Share2 } from "lucide-react";
+import { LazyImage } from "@/components/lazy-image";
 
 const MEREQ_MINT = "#31f5c2";
 
@@ -168,7 +169,12 @@ export default function ProductDetailPage() {
         className="relative h-72 overflow-hidden"
         style={{ backgroundColor: product.color }}
       >
-        <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+        <LazyImage
+          src={product.image}
+          alt={product.name}
+          wrapperClassName="h-full w-full"
+          className="h-full w-full object-cover"
+        />
         <div className="absolute top-4 right-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full">
           <span className="text-xs font-medium text-[#71717A]">{product.category}</span>
         </div>
@@ -182,7 +188,12 @@ export default function ProductDetailPage() {
       >
         <div className="mb-4 rounded-2xl bg-[#F4F4F5] p-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src={product.merchantLogo} alt={product.merchantName} className="w-10 h-10 rounded-full object-cover border border-slate-200" />
+            <LazyImage
+              src={product.merchantLogo}
+              alt={product.merchantName}
+              wrapperClassName="w-10 h-10 rounded-full border border-slate-200"
+              className="w-full h-full object-cover"
+            />
             <div>
               <p className="text-sm font-medium text-[#000000]">{product.merchantName}</p>
               <p className="text-xs text-[#71717A]">{product.merchantType}</p>
@@ -245,7 +256,12 @@ export default function ProductDetailPage() {
               className="w-[170px] shrink-0 snap-start rounded-[24px] overflow-hidden bg-white text-left shadow-[0_2px_18px_rgba(0,0,0,0.06)]"
             >
               <div className="aspect-square bg-[#F4F4F5]">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                <LazyImage
+                  src={item.image}
+                  alt={item.name}
+                  wrapperClassName="w-full h-full"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="p-2.5">
                 <p className="text-xs text-[#71717A]">{item.merchantName}</p>
