@@ -143,7 +143,7 @@ export default function MoneyLimitsPage() {
               exit={{ opacity: 0, y: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 320 }}
               className="fixed bottom-0 left-0 right-0 max-w-[400px] mx-auto bg-white rounded-t-[32px] z-[130] p-6 pb-10 flex flex-col"
-              style={{ paddingBottom: "calc(2.5rem + env(safe-area-inset-bottom))" }}
+              style={{ paddingBottom: "calc(3.5rem + env(safe-area-inset-bottom))" }}
             >
               <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5" />
               <h3 className="text-3xl font-bold text-black text-center">
@@ -157,7 +157,7 @@ export default function MoneyLimitsPage() {
               </button>
               <button
                 onClick={() => setSelectedMerchant(null)}
-                className="w-full mt-3 py-4 rounded-2xl bg-[#F4F4F5] text-[#111827] text-base font-medium"
+                className="w-full mt-3 mb-1 py-4 rounded-2xl bg-[#F4F4F5] text-[#111827] text-base font-medium"
               >
                 No, I&apos;m good
               </button>
